@@ -9,7 +9,7 @@ defmodule AdventureTime.GameTest do
   describe "new/0" do
     test "it creates a new game with no players" do
       game = Game.new()
-      assert game.players == []
+      assert game.players == %{}
       assert length(game.arena) == 10
     end
   end
@@ -22,7 +22,9 @@ defmodule AdventureTime.GameTest do
         empty_game
         |> Game.add_player("test")
 
-      assert game_with_player.players == [%Player{name: "test", grid_ref: {0, 0}}]
+      assert game_with_player.players == %{
+               test: %AdventureTime.Player{grid_ref: {0, 0}, name: "test", tag: :test}
+             }
     end
   end
 end
