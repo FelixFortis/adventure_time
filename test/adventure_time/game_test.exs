@@ -15,7 +15,7 @@ defmodule AdventureTime.GameTest do
   end
 
   describe "add_player/1" do
-    test "it adds a player with to the game with the passed in name" do
+    test "it adds a player to the game with the passed in name on a random walkable tile" do
       # ensure the random placement is predictable for this test
       :rand.seed(:exsplus, {100, 101, 102})
 
@@ -26,7 +26,7 @@ defmodule AdventureTime.GameTest do
         |> Game.add_player("test")
 
       assert game_with_player.players == %{
-               test: %AdventureTime.Player{grid_ref: {2, 3}, name: "test", tag: :test}
+               test: %Player{grid_ref: {2, 3}, name: "test", tag: :test}
              }
     end
   end
