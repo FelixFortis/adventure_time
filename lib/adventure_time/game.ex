@@ -13,7 +13,6 @@ defmodule AdventureTime.Game do
 
   def add_player(game, player_name) do
     player = Player.new(player_name)
-    IO.inspect(player)
 
     game
     |> put_in([Access.key(:players), player.tag], player)
