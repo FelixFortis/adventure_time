@@ -1,4 +1,6 @@
 defmodule AdventureTime.GameDisplay do
+  alias AdventureTime.Arena
+
   def render_game(game) do
     IO.write("\n")
     render_arena(game.arena)
@@ -9,6 +11,8 @@ defmodule AdventureTime.GameDisplay do
 
   defp render_arena(arena) do
     arena
+    |> Arena.grid_squares_as_flattened_list()
+    |> Enum.chunk_every(10)
     |> Enum.each(fn arena_row ->
       render_arena_row(arena_row)
     end)
