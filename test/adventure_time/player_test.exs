@@ -6,7 +6,7 @@ defmodule AdventureTime.PlayerTest do
   doctest Player
 
   describe "new/0" do
-    test "it creates a new player assigned to a random grid" do
+    test "it creates a new player, setting their grid_ref to a random grid" do
       :rand.seed(:exsplus, {100, 101, 102})
       game = Game.new()
       player = Player.new(game, "test")
