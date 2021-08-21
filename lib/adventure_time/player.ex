@@ -8,6 +8,6 @@ defmodule AdventureTime.Player do
   def new(name) do
     tag = name |> String.replace(" ", "_") |> String.to_atom()
 
-    %Player{name: name, tag: tag, grid_ref: Arena.random_walkable_grid_square()}
+    %Player{name: name, tag: tag, grid_ref: Arena.random_walkable_grid_ref()}
   end
 end

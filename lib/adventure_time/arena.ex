@@ -126,14 +126,14 @@ defmodule AdventureTime.Arena do
     ]
   end
 
-  def walkable_grid_squares do
+  def walkable_grid_refs do
     grid()
     |> List.flatten()
     |> Enum.filter(fn grid_square -> grid_square.walkable == true end)
     |> Enum.map(fn grid_square -> grid_square.grid_ref end)
   end
 
-  def random_walkable_grid_square do
-    Enum.random(walkable_grid_squares())
+  def random_walkable_grid_ref do
+    Enum.random(walkable_grid_refs())
   end
 end
