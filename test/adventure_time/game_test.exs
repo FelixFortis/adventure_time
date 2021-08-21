@@ -7,10 +7,11 @@ defmodule AdventureTime.GameTest do
   doctest Game
 
   describe "new/0" do
-    test "it creates a new game with no players" do
+    test "it creates a new game with no players on a 10x10 arena" do
       game = Game.new()
       assert game.players == %{}
       assert length(game.arena) == 10
+      assert length(hd(game.arena)) == 10
     end
   end
 
