@@ -11,8 +11,8 @@ defmodule AdventureTime.Game do
     }
   end
 
-  def add_player(game, player_name) do
-    player = Player.new(player_name)
+  def spawn_player(game, player_name) do
+    player = Player.new(game, player_name)
 
     game
     |> put_in([Access.key(:players), player.tag], player)

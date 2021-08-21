@@ -1,10 +1,17 @@
 defmodule AdventureTime.GridSquare do
-  @enforce_keys [:grid_ref, :walkable]
-  defstruct [:grid_ref, :walkable]
+  alias AdventureTime.Arena
 
-  def find_by_grid_ref(arena, grid_ref) do
-    arena
-    |> List.flatten()
+  @enforce_keys [:grid_ref, :walkable]
+  defstruct [:grid_ref, :walkable, players: %{}]
+
+  def find_by_grid_ref(grid, grid_ref) do
+    grid
+    |> Arena.grid_squares_as_flattened_list()
     |> Enum.find(fn grid_square -> grid_square.grid_ref == grid_ref end)
+  end
+
+  def players(arena, grid_ref) do
+    grid_square = find_by_grid_ref(arena, grid_ref)
+    grid_square.players
   end
 end
