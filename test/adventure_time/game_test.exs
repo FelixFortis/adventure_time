@@ -40,9 +40,9 @@ defmodule AdventureTime.GameTest do
 
     test "the new player can be found on the grid_square", context do
       player = context.game_with_player.players[:test]
+      arena = context.game_with_player.arena
 
-      player_grid_square =
-        GridSquare.find_by_grid_ref(context.game_with_player.arena, player.grid_ref)
+      player_grid_square = GridSquare.find_by_grid_ref(arena, player.grid_ref)
 
       assert player_grid_square.players == %{player.tag => player}
     end

@@ -1,7 +1,7 @@
 defmodule AdventureTime.Arena do
   alias AdventureTime.GridSquare
 
-  def grid do
+  def arena do
     %{
       0 => %{
         0 => %GridSquare{grid_ref: {0, 0}, walkable: false},
@@ -126,19 +126,19 @@ defmodule AdventureTime.Arena do
     }
   end
 
-  def walkable_grid_refs(grid) do
-    grid
+  def walkable_grid_refs(arena) do
+    arena
     |> grid_squares_as_flattened_list()
     |> Enum.filter(fn grid_square -> grid_square.walkable == true end)
     |> Enum.map(fn grid_square -> grid_square.grid_ref end)
   end
 
-  def random_walkable_grid_ref(grid) do
-    Enum.random(walkable_grid_refs(grid))
+  def random_walkable_grid_ref(arena) do
+    Enum.random(walkable_grid_refs(arena))
   end
 
-  def grid_squares_as_flattened_list(grid) do
-    grid
+  def grid_squares_as_flattened_list(arena) do
+    arena
     |> Map.values()
     |> Enum.map(fn rows ->
       Enum.map(rows, fn {_, row} ->

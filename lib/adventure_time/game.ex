@@ -7,7 +7,7 @@ defmodule AdventureTime.Game do
   def new do
     %Game{
       players: %{},
-      arena: Arena.grid()
+      arena: Arena.arena()
     }
   end
 
