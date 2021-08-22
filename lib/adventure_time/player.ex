@@ -2,7 +2,7 @@ defmodule AdventureTime.Player do
   alias AdventureTime.Player
 
   @enforce_keys [:name]
-  defstruct [:name, :tag, :alive, :respawnable]
+  defstruct [:name, :tag]
 
   def new(name) do
     tag =
@@ -13,9 +13,7 @@ defmodule AdventureTime.Player do
 
     %Player{
       name: name,
-      tag: tag,
-      alive: true,
-      respawnable: false
+      tag: tag
     }
   end
 

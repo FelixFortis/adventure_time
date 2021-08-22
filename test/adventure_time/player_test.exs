@@ -11,9 +11,7 @@ defmodule AdventureTime.PlayerTest do
 
       assert player == %Player{
                name: "test",
-               tag: :test,
-               alive: true,
-               respawnable: false
+               tag: :test
              }
     end
   end
