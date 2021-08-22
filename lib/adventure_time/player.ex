@@ -1,17 +1,19 @@
 defmodule AdventureTime.Player do
   alias AdventureTime.Player
-  alias AdventureTime.Arena
 
-  @enforce_keys [:name, :grid_ref]
-  defstruct [:name, :grid_ref, :tag, :alive, :respawnable]
+  @enforce_keys [:name]
+  defstruct [:name, :tag, :alive, :respawnable]
 
-  def new(game, name) do
-    tag = name |> String.replace(" ", "_") |> String.to_atom()
+  def new(name) do
+    tag =
+      name
+      |> String.downcase()
+      |> String.replace(" ", "_")
+      |> String.to_atom()
 
     %Player{
       name: name,
       tag: tag,
-      grid_ref: Arena.random_walkable_grid_ref(game.arena),
       alive: true,
       respawnable: false
     }

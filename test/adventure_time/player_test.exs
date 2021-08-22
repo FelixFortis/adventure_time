@@ -6,13 +6,10 @@ defmodule AdventureTime.PlayerTest do
   doctest Player
 
   describe "new/0" do
-    test "it creates a new player, setting their grid_ref to a random grid" do
-      :rand.seed(:exsplus, {100, 101, 102})
-      game = Game.new()
-      player = Player.new(game, "test")
+    test "it creates a new player" do
+      player = Player.new("test")
 
       assert player == %Player{
-               grid_ref: {2, 3},
                name: "test",
                tag: :test,
                alive: true,

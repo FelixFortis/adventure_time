@@ -1,34 +1,29 @@
 defmodule AdventureTime.Game do
-  alias AdventureTime.{Game, Arena, Player}
+  alias AdventureTime.{Game, Arena}
 
-  @enforce_keys [:arena, :players]
-  defstruct [:arena, :players]
+  @enforce_keys [:arena]
+  defstruct [:arena]
 
   def new do
     %Game{
-      players: %{},
       arena: Arena.arena()
     }
   end
 
-  def spawn_player(game, player_name) do
-    player = Player.new(game, player_name)
-
+  def spawn_player(game, player) do
     game
-    |> put_in([Access.key(:players), Access.key(player.tag)], player)
     |> add_player_to_grid_square(player)
   end
 
   defp add_player_to_grid_square(game, player) do
-    player_eastings = elem(player.grid_ref, 0)
-    player_northings = elem(player.grid_ref, 1)
+    {eastings, northings} = Arena.random_walkable_grid_ref(game.arena)
 
     game
     |> put_in(
       [
         Access.key(:arena),
-        Access.key(player_eastings),
-        Access.key(player_northings),
+        Access.key(eastings),
+        Access.key(northings),
         Access.key(:players),
         Access.key(player.tag)
       ],
