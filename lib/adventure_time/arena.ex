@@ -147,4 +147,14 @@ defmodule AdventureTime.Arena do
     end)
     |> List.flatten()
   end
+
+  def player_grid_ref(arena, player) do
+    arena
+    |> grid_squares_as_flattened_list()
+    |> Enum.filter(fn %{players: players} ->
+      players[player.tag] == player
+    end)
+    |> hd
+    |> Map.get(:grid_ref)
+  end
 end
