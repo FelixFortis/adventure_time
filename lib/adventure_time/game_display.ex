@@ -21,14 +21,23 @@ defmodule AdventureTime.GameDisplay do
   defp render_arena_row(row) do
     row
     |> Enum.each(fn grid_square ->
-      if grid_square.walkable == false do
-        IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
-      else
-        IO.write("#{IO.ANSI.white_background()}   #{IO.ANSI.reset()}")
-      end
+      render_grid_square(grid_square)
     end)
 
     IO.write("\n")
+  end
+
+  defp render_grid_square(grid_square) do
+    cond do
+      grid_square.walkable == false ->
+        IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
+
+      length(Map.keys(grid_square.players)) > 0 ->
+        IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
+
+      true ->
+        IO.write("#{IO.ANSI.white_background()}   #{IO.ANSI.reset()}")
+    end
   end
 
   defp render_player_info(players) do
