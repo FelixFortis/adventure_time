@@ -1,11 +1,11 @@
 defmodule AdventureTime.GameDisplay do
-  alias AdventureTime.Arena
+  alias AdventureTime.{Game, Arena}
 
   def render_game(game, player) do
     IO.write("\n")
     render_arena(game.arena, player)
     IO.write("\n")
-    render_player_info(game.players)
+    render_player_info(game)
     IO.write("\n")
   end
 
@@ -32,7 +32,7 @@ defmodule AdventureTime.GameDisplay do
       grid_square.walkable == false ->
         IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
 
-      grid_square.players[player] == player ->
+      grid_square.players[player.tag] == player ->
         IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
 
       length(Map.keys(grid_square.players)) > 0 ->
@@ -43,10 +43,16 @@ defmodule AdventureTime.GameDisplay do
     end
   end
 
-  defp render_player_info(players) do
-    players
-    |> Enum.each(fn {_tag, player} ->
-      IO.puts("#{player.name} - {#{elem(player.grid_ref, 0)}, #{elem(player.grid_ref, 1)}}")
+  defp render_player_info(game) do
+    game
+    |> Game.players()
+    |> Enum.each(fn %{grid_ref: grid_ref, players: players} ->
+      IO.write("\n")
+      IO.inspect(grid_ref)
+
+      Enum.each(players, fn player ->
+        IO.puts("- #{player.name}")
+      end)
     end)
   end
 end
