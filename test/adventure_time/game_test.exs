@@ -1,7 +1,7 @@
 defmodule AdventureTime.GameTest do
   use ExUnit.Case, async: true
 
-  alias AdventureTime.{Game, Player, GridSquare}
+  alias AdventureTime.{Game, Arena, Player, GridSquare}
 
   doctest Game
 
@@ -46,6 +46,34 @@ defmodule AdventureTime.GameTest do
                %{grid_ref: {2, 3}, players: [context.player1]},
                %{grid_ref: {7, 7}, players: [context.player2]}
              ]
+    end
+  end
+
+  describe "move_player_to/3 when the new grid is walkable" do
+    test "it adds the player to the passed in grid_square", context do
+      game = Game.move_player_to(context.game_with_players, context.player1, {8, 8})
+
+      assert Arena.player_grid_ref(game.arena, context.player1) == {8, 8}
+    end
+
+    test "it removes the player from their previous grid_square", context do
+      game = Game.move_player_to(context.game_with_players, context.player1, {8, 8})
+
+      assert GridSquare.players(game.arena, {2, 3}) == %{}
+    end
+  end
+
+  describe "move_player_to/3 when the new grid is not walkable" do
+    test "it does not add the player to the passed in grid_square", context do
+      game = Game.move_player_to(context.game_with_players, context.player1, {9, 9})
+
+      assert Arena.player_grid_ref(game.arena, context.player1) == {2, 3}
+    end
+
+    test "it does not remove the player from their current grid_square", context do
+      game = Game.move_player_to(context.game_with_players, context.player1, {9, 9})
+
+      assert GridSquare.players(game.arena, {2, 3}) == %{context.player1.tag => context.player1}
     end
   end
 end
