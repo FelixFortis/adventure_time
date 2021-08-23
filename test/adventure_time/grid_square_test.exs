@@ -8,12 +8,25 @@ defmodule AdventureTime.GridSquareTest do
   setup do
     arena = %{
       0 => %{
-        0 => %GridSquare{grid_ref: {0, 0}, walkable: false},
-        1 => %GridSquare{grid_ref: {0, 1}, walkable: false}
+        0 => %GridSquare{
+          grid_ref: {0, 0},
+          walkable: false,
+          players: %{
+            test1: %Player{name: "test1", tag: :test1},
+            test2: %Player{name: "test2", tag: :test2}
+          }
+        },
+        1 => %GridSquare{grid_ref: {0, 1}, walkable: false, players: %{}}
       },
       1 => %{
-        0 => %GridSquare{grid_ref: {1, 0}, walkable: false},
-        1 => %GridSquare{grid_ref: {1, 1}, walkable: true}
+        0 => %GridSquare{grid_ref: {1, 0}, walkable: false, players: %{}},
+        1 => %GridSquare{
+          grid_ref: {1, 1},
+          walkable: true,
+          players: %{
+            test3: %Player{name: "test3", tag: :test3}
+          }
+        }
       }
     }
 
@@ -24,14 +37,21 @@ defmodule AdventureTime.GridSquareTest do
 
   describe "find_by_grid_ref/2" do
     test "it returns the grid_square with the passed in grid_ref", context do
-      assert GridSquare.find_by_grid_ref(context.arena, {1, 1}) == %GridSquare{
-               grid_ref: {1, 1},
-               walkable: true
+      assert GridSquare.find_by_grid_ref(context.arena, {1, 0}) == %GridSquare{
+               grid_ref: {1, 0},
+               walkable: false,
+               players: %{}
              }
     end
   end
 
   describe "players/2" do
+    test "it returns a map of the players that currently occupy the grid_square", context do
+      assert GridSquare.players(context.arena, {0, 0}) == %{
+               test1: %AdventureTime.Player{name: "test1", tag: :test1},
+               test2: %AdventureTime.Player{name: "test2", tag: :test2}
+             }
+    end
   end
 
   describe "walkable?/2" do
