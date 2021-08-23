@@ -14,4 +14,10 @@ defmodule AdventureTime.GridSquare do
     grid_square = find_by_grid_ref(arena, grid_ref)
     grid_square.players
   end
+
+  def walkable?(arena, grid_ref) do
+    grid_square = find_by_grid_ref(arena, grid_ref)
+
+    grid_square.walkable == true
+  end
 end
