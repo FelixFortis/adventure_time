@@ -20,4 +20,25 @@ defmodule AdventureTime.GridSquare do
 
     grid_square.walkable == true
   end
+
+  def attackable_grid_refs(arena, current_grid_ref) do
+    walkable_grid_refs = Arena.walkable_grid_refs(arena)
+    {y_axis, x_axis} = current_grid_ref
+
+    potential_grid_refs = [
+      {y_axis - 1, x_axis - 1},
+      {y_axis - 1, x_axis},
+      {y_axis - 1, x_axis + 1},
+      {y_axis, x_axis - 1},
+      {y_axis, x_axis},
+      {y_axis, x_axis + 1},
+      {y_axis + 1, x_axis - 1},
+      {y_axis + 1, x_axis},
+      {y_axis + 1, x_axis + 1}
+    ]
+
+    Enum.filter(potential_grid_refs, fn grid_ref ->
+      Enum.member?(walkable_grid_refs, grid_ref)
+    end)
+  end
 end
