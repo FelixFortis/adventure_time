@@ -16,10 +16,4 @@ defmodule AdventureTime.Player do
       tag: tag
     }
   end
-
-  # def respawn(player) do
-  # end
-
-  # def attack(player) do
-  # end
 end

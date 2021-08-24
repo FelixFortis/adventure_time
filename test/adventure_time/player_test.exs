@@ -1,7 +1,7 @@
 defmodule AdventureTime.PlayerTest do
   use ExUnit.Case, async: true
 
-  alias AdventureTime.{Game, Player}
+  alias AdventureTime.{Player}
 
   doctest Player
 

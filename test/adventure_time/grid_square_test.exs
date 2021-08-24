@@ -65,10 +65,10 @@ defmodule AdventureTime.GridSquareTest do
     end
   end
 
-  describe "attackable_grid_refs/2" do
+  describe "interactable_grid_refs/2" do
     test "it returns a list of grid_refs - the given grid_ref and all adjacent walkable grid_refs",
          context do
-      assert GridSquare.attackable_grid_refs(context.game.arena, {5, 2}) == [
+      assert GridSquare.interactable_grid_refs(context.game.arena, {5, 2}) == [
                {4, 1},
                {4, 2},
                {4, 3},

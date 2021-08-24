@@ -21,7 +21,7 @@ defmodule AdventureTime.GridSquare do
     grid_square.walkable == true
   end
 
-  def attackable_grid_refs(arena, current_grid_ref) do
+  def interactable_grid_refs(arena, current_grid_ref) do
     walkable_grid_refs = Arena.walkable_grid_refs(arena)
     {y_axis, x_axis} = current_grid_ref
 
