@@ -20,9 +20,6 @@ defmodule AdventureTime.Player do
   # def respawn(player) do
   # end
 
-  # def move_to(player, grid_ref) do
-  # end
-
   # def attack(player) do
   # end
 end

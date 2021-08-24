@@ -32,6 +32,9 @@ defmodule AdventureTime.GameDisplay do
       grid_square.walkable == false ->
         IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
 
+      length(Map.keys(grid_square.players)) > 1 && grid_square.players[player.tag] == player ->
+        IO.write("#{IO.ANSI.yellow_background()}   #{IO.ANSI.reset()}")
+
       grid_square.players[player.tag] == player ->
         IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
 
