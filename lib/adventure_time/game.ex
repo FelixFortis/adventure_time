@@ -37,14 +37,14 @@ defmodule AdventureTime.Game do
   end
 
   defp add_player_to_random_grid_square(game, player) do
-    {eastings, northings} = Arena.random_walkable_grid_ref(game.arena)
+    {y_axis, x_axis} = Arena.random_walkable_grid_ref(game.arena)
 
     game
     |> put_in(
       [
         Access.key(:arena),
-        Access.key(eastings),
-        Access.key(northings),
+        Access.key(y_axis),
+        Access.key(x_axis),
         Access.key(:players),
         Access.key(player.tag)
       ],
@@ -53,14 +53,14 @@ defmodule AdventureTime.Game do
   end
 
   defp add_player_to_grid_square(game, player, grid_ref) do
-    {eastings, northings} = grid_ref
+    {y_axis, x_axis} = grid_ref
 
     game
     |> put_in(
       [
         Access.key(:arena),
-        Access.key(eastings),
-        Access.key(northings),
+        Access.key(y_axis),
+        Access.key(x_axis),
         Access.key(:players),
         Access.key(player.tag)
       ],
@@ -69,14 +69,14 @@ defmodule AdventureTime.Game do
   end
 
   defp remove_player_from_grid_square(game, player, grid_ref) do
-    {eastings, northings} = grid_ref
+    {y_axis, x_axis} = grid_ref
 
     {_, updated_game} =
       game
       |> pop_in([
         Access.key(:arena),
-        Access.key(eastings),
-        Access.key(northings),
+        Access.key(y_axis),
+        Access.key(x_axis),
         Access.key(:players),
         Access.key(player.tag)
       ])
