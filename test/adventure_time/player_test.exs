@@ -5,13 +5,28 @@ defmodule AdventureTime.PlayerTest do
 
   doctest Player
 
-  describe "new/0" do
-    test "it creates a new player" do
-      player = Player.new("test")
+  setup do
+    [
+      player: Player.new("test player", {5, 6})
+    ]
+  end
 
-      assert player == %Player{
-               name: "test",
-               tag: :test
+  describe "new/2" do
+    test "it creates a new player at the given location", context do
+      assert context.player == %Player{
+               name: "test player",
+               tag: :test_player,
+               grid_ref: {5, 6}
+             }
+    end
+  end
+
+  describe "move_to/2" do
+    test "it updates the player's location", context do
+      assert Player.move_to(context.player, {5, 7}) == %Player{
+               name: "test player",
+               tag: :test_player,
+               grid_ref: {5, 7}
              }
     end
   end
