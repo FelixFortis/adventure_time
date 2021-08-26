@@ -1,17 +1,16 @@
 defmodule AdventureTime.GameDisplay do
-  alias AdventureTime.{Game, Arena}
+  alias AdventureTime.{Arena}
 
-  def render_game(game, player) do
+  def render_game(player) do
     IO.write("\n")
-    render_arena(game.arena, player)
+    render_arena(player)
     IO.write("\n")
-    render_player_info(game)
+    render_player_info()
     IO.write("\n")
   end
 
-  defp render_arena(arena, player) do
-    arena
-    |> Arena.game_tiles_as_flattened_list()
+  defp render_arena(player) do
+    Arena.game_tiles_as_flattened_list()
     |> Enum.chunk_every(10)
     |> Enum.each(fn arena_row ->
       render_arena_row(arena_row, player)
@@ -46,16 +45,7 @@ defmodule AdventureTime.GameDisplay do
     end
   end
 
-  defp render_player_info(game) do
-    game
-    |> Game.players()
-    |> Enum.each(fn %{grid_ref: grid_ref, players: players} ->
-      IO.write("\n")
-      IO.inspect(grid_ref)
-
-      Enum.each(players, fn player ->
-        IO.puts("- #{player.name}")
-      end)
-    end)
+  defp render_player_info do
+    # retrieve players from registry?
   end
 end
