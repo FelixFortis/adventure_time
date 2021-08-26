@@ -11,7 +11,7 @@ defmodule AdventureTime.GameDisplay do
 
   defp render_arena(arena, player) do
     arena
-    |> Arena.grid_squares_as_flattened_list()
+    |> Arena.game_tiles_as_flattened_list()
     |> Enum.chunk_every(10)
     |> Enum.each(fn arena_row ->
       render_arena_row(arena_row, player)
@@ -20,25 +20,25 @@ defmodule AdventureTime.GameDisplay do
 
   defp render_arena_row(row, player) do
     row
-    |> Enum.each(fn grid_square ->
-      render_grid_square(grid_square, player)
+    |> Enum.each(fn game_tile ->
+      render_game_tile(game_tile, player)
     end)
 
     IO.write("\n")
   end
 
-  defp render_grid_square(grid_square, player) do
+  defp render_game_tile(game_tile, player) do
     cond do
-      grid_square.walkable == false ->
+      game_tile.walkable == false ->
         IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
 
-      length(Map.keys(grid_square.players)) > 1 && grid_square.players[player.tag] == player ->
+      length(Map.keys(game_tile.players)) > 1 && game_tile.players[player.tag] == player ->
         IO.write("#{IO.ANSI.yellow_background()}   #{IO.ANSI.reset()}")
 
-      grid_square.players[player.tag] == player ->
+      game_tile.players[player.tag] == player ->
         IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
 
-      length(Map.keys(grid_square.players)) > 0 ->
+      length(Map.keys(game_tile.players)) > 0 ->
         IO.write("#{IO.ANSI.red_background()}   #{IO.ANSI.reset()}")
 
       true ->

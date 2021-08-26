@@ -1,7 +1,7 @@
 defmodule AdventureTime.ArenaTest do
   use ExUnit.Case, async: true
 
-  alias AdventureTime.{Arena, GridSquare, Game, Player}
+  alias AdventureTime.{Arena, GameTile, Game, Player}
 
   doctest Arena
 
@@ -12,31 +12,31 @@ defmodule AdventureTime.ArenaTest do
 
       grid_refs
       |> Enum.each(fn grid_ref ->
-        grid_square = GridSquare.find_by_grid_ref(arena, grid_ref)
+        game_tile = GameTile.find_by_grid_ref(arena, grid_ref)
 
-        assert grid_square.walkable == true
+        assert game_tile.walkable == true
       end)
     end
   end
 
-  describe "grid_squares_as_flattened_list/1" do
-    test "it returns all grid_squares as a list of maps" do
+  describe "game_tiles_as_flattened_list/1" do
+    test "it returns all game_tiles as a list of maps" do
       arena = %{
         0 => %{
-          0 => %GridSquare{grid_ref: {0, 0}, walkable: false, players: %{}},
-          1 => %GridSquare{grid_ref: {0, 1}, walkable: false, players: %{}}
+          0 => %GameTile{grid_ref: {0, 0}, walkable: false, players: %{}},
+          1 => %GameTile{grid_ref: {0, 1}, walkable: false, players: %{}}
         },
         1 => %{
-          0 => %GridSquare{grid_ref: {1, 0}, walkable: false, players: %{}},
-          1 => %GridSquare{grid_ref: {1, 1}, walkable: true, players: %{}}
+          0 => %GameTile{grid_ref: {1, 0}, walkable: false, players: %{}},
+          1 => %GameTile{grid_ref: {1, 1}, walkable: true, players: %{}}
         }
       }
 
-      assert Arena.grid_squares_as_flattened_list(arena) == [
-               %GridSquare{grid_ref: {0, 0}, walkable: false, players: %{}},
-               %GridSquare{grid_ref: {0, 1}, walkable: false, players: %{}},
-               %GridSquare{grid_ref: {1, 0}, walkable: false, players: %{}},
-               %GridSquare{grid_ref: {1, 1}, walkable: true, players: %{}}
+      assert Arena.game_tiles_as_flattened_list(arena) == [
+               %GameTile{grid_ref: {0, 0}, walkable: false, players: %{}},
+               %GameTile{grid_ref: {0, 1}, walkable: false, players: %{}},
+               %GameTile{grid_ref: {1, 0}, walkable: false, players: %{}},
+               %GameTile{grid_ref: {1, 1}, walkable: true, players: %{}}
              ]
     end
   end
