@@ -16,7 +16,7 @@ defmodule AdventureTime.PlayerTest do
       assert context.player == %Player{
                name: "test player",
                tag: :test_player,
-               grid_ref: {5, 6}
+               tile_ref: {5, 6}
              }
     end
   end
@@ -26,7 +26,7 @@ defmodule AdventureTime.PlayerTest do
       assert Player.move_to(context.player, {5, 7}) == %Player{
                name: "test player",
                tag: :test_player,
-               grid_ref: {5, 7}
+               tile_ref: {5, 7}
              }
     end
   end

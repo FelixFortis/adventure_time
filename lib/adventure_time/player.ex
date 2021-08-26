@@ -1,27 +1,27 @@
 defmodule AdventureTime.Player do
-  alias AdventureTime.Player
+  alias AdventureTime.{Player, GameTile}
 
   @enforce_keys [:name]
-  defstruct [:name, :tag, :grid_ref]
+  defstruct [:name, :tag, :tile_ref]
 
   @adjectives Application.get_env(:adventure_time, :adjectives)
   @nouns Application.get_env(:adventure_time, :nouns)
 
-  def new(name \\ "", grid_ref) do
+  def new(name \\ "", tile_ref) do
     player_name = set_player_name(name)
     tag = parse_player_tag(player_name)
 
     %Player{
       name: player_name,
       tag: tag,
-      grid_ref: grid_ref
+      tile_ref: tile_ref
     }
   end
 
-  def move_to(player, new_grid_ref) do
-    if GameTile.walkable?(new_grid_ref) do
+  def move_to(player, new_tile_ref) do
+    if GameTile.walkable?(new_tile_ref) do
       player
-      |> Map.put(:grid_ref, new_grid_ref)
+      |> Map.put(:tile_ref, new_tile_ref)
     else
       player
     end
