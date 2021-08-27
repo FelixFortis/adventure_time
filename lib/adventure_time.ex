@@ -1,6 +1,4 @@
 defmodule AdventureTime do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
@@ -8,12 +6,10 @@ defmodule AdventureTime do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: AdventureTime.Worker.start_link(arg)
-      # {AdventureTime.Worker, arg}
+      {Registry, keys: :unique, name: AdventureTime.PlayerRegistry}
+      # AdventureTime.PlayerSupervisor
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: AdventureTime.Supervisor]
     Supervisor.start_link(children, opts)
   end
