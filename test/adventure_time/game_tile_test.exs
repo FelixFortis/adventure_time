@@ -15,12 +15,22 @@ defmodule AdventureTime.GameTileTest do
   end
 
   describe "walkable?/1" do
-    test "it returns true for a walkable grid square" do
+    test "it returns true for a walkable game tile" do
       assert GameTile.walkable?({1, 1}) == true
     end
 
-    test "it returns false for an unwalkable grid square" do
+    test "it returns false for an unwalkable game tile" do
       assert GameTile.walkable?({0, 1}) == false
+    end
+  end
+
+  describe "adjacent?/2" do
+    test "it returns true for an adjacent game tile" do
+      assert GameTile.adjacent?({5, 5}, {5, 6}) == true
+    end
+
+    test "it returns false for a non-adjacent game tile" do
+      assert GameTile.adjacent?({5, 5}, {5, 7}) == false
     end
   end
 

@@ -19,6 +19,10 @@ defmodule AdventureTime.GameTile do
     game_tile.walkable == true
   end
 
+  def adjacent?(current_tile_ref, new_tile_ref) do
+    new_tile_ref in interactable_tile_refs(current_tile_ref)
+  end
+
   def interactable_tile_refs(current_tile_ref) do
     walkable_tile_refs = Arena.walkable_tile_refs()
     {y_axis, x_axis} = current_tile_ref

@@ -19,7 +19,7 @@ defmodule AdventureTime.Player do
   end
 
   def move_to(player, new_tile_ref) do
-    if GameTile.walkable?(new_tile_ref) do
+    if GameTile.walkable?(new_tile_ref) && GameTile.adjacent?(player.tile_ref, new_tile_ref) do
       player
       |> Map.put(:tile_ref, new_tile_ref)
     else
