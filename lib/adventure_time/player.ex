@@ -1,8 +1,8 @@
 defmodule AdventureTime.Player do
-  alias AdventureTime.{Player, GameTile}
+  alias AdventureTime.{Player, GameTile, Arena}
 
   @enforce_keys [:name]
-  defstruct [:name, :tag, :tile_ref]
+  defstruct [:name, :tag, :tile_ref, :alive]
 
   @adjectives Application.get_env(:adventure_time, :adjectives)
   @nouns Application.get_env(:adventure_time, :nouns)
@@ -14,14 +14,23 @@ defmodule AdventureTime.Player do
     %Player{
       name: player_name,
       tag: tag,
-      tile_ref: tile_ref
+      tile_ref: tile_ref,
+      alive: true
     }
+  end
+
+  def die_and_respawn(player) do
+    player
+    |> mark_as_dead()
+    |> respawn_cooldown()
+    |> mark_as_alive()
+    |> respawn()
   end
 
   def move_to(player, new_tile_ref) do
     if GameTile.walkable?(new_tile_ref) && GameTile.adjacent?(player.tile_ref, new_tile_ref) do
       player
-      |> Map.put(:tile_ref, new_tile_ref)
+      |> insert_at(new_tile_ref)
     else
       player
     end
@@ -35,6 +44,31 @@ defmodule AdventureTime.Player do
     |> Enum.map(&sample/1)
     |> Enum.concat(List.wrap(token))
     |> Enum.join(delimiter)
+  end
+
+  defp mark_as_dead(player) do
+    player
+    |> Map.put(:alive, false)
+  end
+
+  defp mark_as_alive(player) do
+    player
+    |> Map.put(:alive, true)
+  end
+
+  defp respawn_cooldown(player) do
+    :timer.seconds(5)
+    player
+  end
+
+  defp respawn(player) do
+    player
+    |> insert_at(Arena.random_walkable_tile_ref())
+  end
+
+  defp insert_at(player, new_tile_ref) do
+    player
+    |> Map.put(:tile_ref, new_tile_ref)
   end
 
   defp random(range) when range > 0, do: :rand.uniform(range)

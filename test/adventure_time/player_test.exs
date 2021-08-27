@@ -16,7 +16,8 @@ defmodule AdventureTime.PlayerTest do
       assert context.player == %Player{
                name: "test player",
                tag: :test_player,
-               tile_ref: {6, 4}
+               tile_ref: {6, 4},
+               alive: true
              }
     end
   end
@@ -26,7 +27,8 @@ defmodule AdventureTime.PlayerTest do
       assert Player.move_to(context.player, {6, 5}) == %Player{
                name: "test player",
                tag: :test_player,
-               tile_ref: {6, 5}
+               tile_ref: {6, 5},
+               alive: true
              }
     end
 
@@ -34,7 +36,8 @@ defmodule AdventureTime.PlayerTest do
       assert Player.move_to(context.player, {6, 6}) == %Player{
                name: "test player",
                tag: :test_player,
-               tile_ref: {6, 4}
+               tile_ref: {6, 4},
+               alive: true
              }
     end
 
@@ -43,7 +46,22 @@ defmodule AdventureTime.PlayerTest do
       assert Player.move_to(context.player, {6, 3}) == %Player{
                name: "test player",
                tag: :test_player,
-               tile_ref: {6, 4}
+               tile_ref: {6, 4},
+               alive: true
+             }
+    end
+  end
+
+  describe "die_and_respawn/1" do
+    test "the player is set to dead", context do
+      # for this test we need to ensure the randomness is predictable
+      :rand.seed(:exsplus, {100, 101, 102})
+
+      assert Player.die_and_respawn(context.player) == %Player{
+               name: "test player",
+               tag: :test_player,
+               tile_ref: {2, 3},
+               alive: true
              }
     end
   end
