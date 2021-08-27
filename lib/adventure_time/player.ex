@@ -1,4 +1,9 @@
 defmodule AdventureTime.Player do
+  @moduledoc """
+  A player struct and the main component of the game - contains the location and status of the player
+  Module contains functions around player actions like movement.
+  """
+
   alias AdventureTime.{Player, GameTile, Arena}
 
   @enforce_keys [:name]

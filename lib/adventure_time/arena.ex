@@ -1,4 +1,9 @@
 defmodule AdventureTime.Arena do
+  @moduledoc """
+  A struct which represents a collection of game_tiles arranged in a grid
+  Module contains functions around dealing with game_tiles when they are arranged in a grid
+  """
+
   alias AdventureTime.GameTile
 
   def arena do

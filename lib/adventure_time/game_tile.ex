@@ -1,4 +1,9 @@
 defmodule AdventureTime.GameTile do
+  @moduledoc """
+  A struct which represents a single tile on the game's arena - contains the location and status of the tile
+  Module contains functions around dealing with tiles on an individual basis
+  """
+
   alias AdventureTime.Arena
 
   @enforce_keys [:tile_ref, :walkable]
@@ -10,7 +15,7 @@ defmodule AdventureTime.GameTile do
   end
 
   def players(_tile_ref) do
-    # get a list of attackable players
+    # get a list of players on adjacent tiles
   end
 
   def walkable?(tile_ref) do

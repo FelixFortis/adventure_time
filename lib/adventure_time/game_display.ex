@@ -1,4 +1,8 @@
 defmodule AdventureTime.GameDisplay do
+  @moduledoc """
+  A module for the purposes of rendering the game in IEX to aid development
+  """
+
   alias AdventureTime.{Arena}
 
   def render_game(player) do
