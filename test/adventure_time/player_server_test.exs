@@ -12,14 +12,16 @@ defmodule PlayerServerTest do
     ]
   end
 
-  test "spawning a player server process", context do
-    assert({:ok, _pid} = PlayerServer.start_link(context.player_name))
-  end
+  describe "spawning a player server process" do
+    test "spawns a player server successfully", context do
+      assert({:ok, _pid} = PlayerServer.start_link(context.player_name))
+    end
 
-  test "player processes are unique by name", context do
-    assert {:ok, _pid} = PlayerServer.start_link(context.player_name)
+    test "player processes are unique by name", context do
+      assert {:ok, _pid} = PlayerServer.start_link(context.player_name)
 
-    assert {:error, _reason} = PlayerServer.start_link(context.player_name)
+      assert {:error, _reason} = PlayerServer.start_link(context.player_name)
+    end
   end
 
   describe "returning player attributes" do
