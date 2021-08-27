@@ -45,4 +45,28 @@ defmodule AdventureTime.ArenaTest do
       assert length(Arena.game_tiles_as_flattened_list()) == 100
     end
   end
+
+  describe "adjacent?/2" do
+    test "it returns true for an adjacent game tile" do
+      assert Arena.adjacent?({5, 5}, {5, 6}) == true
+    end
+
+    test "it returns false for a non-adjacent game tile" do
+      assert Arena.adjacent?({5, 5}, {5, 7}) == false
+    end
+  end
+
+  describe "interactable_tile_refs/2" do
+    test "it returns a list of tile_refs - the given tile_ref and all adjacent walkable tile_refs" do
+      assert Arena.interactable_tile_refs({5, 2}) == [
+               {4, 1},
+               {4, 2},
+               {4, 3},
+               {5, 1},
+               {5, 2},
+               {5, 3},
+               {6, 1}
+             ]
+    end
+  end
 end

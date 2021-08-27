@@ -151,4 +151,28 @@ defmodule AdventureTime.Arena do
     end)
     |> List.flatten()
   end
+
+  def adjacent?(current_tile_ref, new_tile_ref) do
+    new_tile_ref in interactable_tile_refs(current_tile_ref)
+  end
+
+  def interactable_tile_refs(current_tile_ref) do
+    {y_axis, x_axis} = current_tile_ref
+
+    potential_tile_refs = [
+      {y_axis - 1, x_axis - 1},
+      {y_axis - 1, x_axis},
+      {y_axis - 1, x_axis + 1},
+      {y_axis, x_axis - 1},
+      {y_axis, x_axis},
+      {y_axis, x_axis + 1},
+      {y_axis + 1, x_axis - 1},
+      {y_axis + 1, x_axis},
+      {y_axis + 1, x_axis + 1}
+    ]
+
+    Enum.filter(potential_tile_refs, fn tile_ref ->
+      Enum.member?(walkable_tile_refs(), tile_ref)
+    end)
+  end
 end
