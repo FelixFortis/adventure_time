@@ -24,9 +24,15 @@ defmodule PlayerServerTest do
 
   test "finding a player's game_tile location", context do
     {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
-
     player_tile_ref = PlayerServer.tile_ref(context.player_name)
 
     assert player_tile_ref == {2, 3}
+  end
+
+  test "finding a player's alive status", context do
+    {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
+    player_alive_status = PlayerServer.alive?(context.player_name)
+
+    assert player_alive_status == true
   end
 end

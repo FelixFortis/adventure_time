@@ -39,6 +39,10 @@ defmodule AdventureTime.PlayerServer do
     GenServer.call(via_player_registry(player_name), :tile_ref)
   end
 
+  def alive?(player_name) do
+    GenServer.call(via_player_registry(player_name), :alive?)
+  end
+
   @doc """
   Returns a tuple which registers and looks up a player server process by `player_name`.
   """
@@ -84,5 +88,9 @@ defmodule AdventureTime.PlayerServer do
 
   def handle_call(:tile_ref, _from, player) do
     {:reply, player.tile_ref, player, @timeout}
+  end
+
+  def handle_call(:alive?, _from, player) do
+    {:reply, player.alive, player, @timeout}
   end
 end
