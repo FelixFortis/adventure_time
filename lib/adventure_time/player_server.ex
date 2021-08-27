@@ -87,6 +87,8 @@ defmodule AdventureTime.PlayerServer do
           player
       end
 
+    Logger.info("'#{player_name}' player server process spawned.")
+
     {:ok, player, @timeout}
   end
 
