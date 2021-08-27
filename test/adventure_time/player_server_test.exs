@@ -22,17 +22,45 @@ defmodule PlayerServerTest do
     assert {:error, _reason} = PlayerServer.start_link(context.player_name)
   end
 
-  test "finding a player's game_tile location", context do
-    {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
-    player_tile_ref = PlayerServer.tile_ref(context.player_name)
+  describe "returning player attributes" do
+    test "finding a player's game_tile location", context do
+      {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
+      player_tile_ref = PlayerServer.tile_ref(context.player_name)
 
-    assert player_tile_ref == {2, 3}
+      assert player_tile_ref == {2, 3}
+    end
+
+    test "finding a player's alive status", context do
+      {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
+      player_alive_status = PlayerServer.alive?(context.player_name)
+
+      assert player_alive_status == true
+    end
   end
 
-  test "finding a player's alive status", context do
-    {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
-    player_alive_status = PlayerServer.alive?(context.player_name)
+  describe "moving a player" do
+    test "to an adjacent walkable game_tile", context do
+      {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
+      new_tile_ref = {2, 4}
+      moved_player = PlayerServer.move_to(context.player_name, new_tile_ref)
 
-    assert player_alive_status == true
+      assert moved_player.tile_ref == {2, 4}
+    end
+
+    test "to a non-adjacent game_tile", context do
+      {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
+      new_tile_ref = {2, 5}
+      moved_player = PlayerServer.move_to(context.player_name, new_tile_ref)
+
+      assert moved_player.tile_ref == {2, 3}
+    end
+
+    test "to an adjacent non-walkable game_tile", context do
+      {:ok, _pid} = PlayerServer.start_link(context.player_name, context.seed)
+      new_tile_ref = {1, 3}
+      moved_player = PlayerServer.move_to(context.player_name, new_tile_ref)
+
+      assert moved_player.tile_ref == {2, 3}
+    end
   end
 end
