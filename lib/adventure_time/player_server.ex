@@ -13,19 +13,36 @@ defmodule AdventureTime.PlayerServer do
 
   @doc """
   Spawns a new player server process registered under the given `player_name`.
+  The player spawn location will be random.
   """
   def start_link(player_name) do
     GenServer.start_link(
       __MODULE__,
       player_name,
-      name: via_tuple(player_name)
+      name: via_player_registry(player_name)
     )
+  end
+
+  @doc """
+  Spawns a new player server process registered under the given `player_name`.
+  The player spawn location will be predictably random based on the passed in `seed`.
+  """
+  def start_link(player_name, seed) do
+    GenServer.start_link(
+      __MODULE__,
+      {player_name, seed},
+      name: via_player_registry(player_name)
+    )
+  end
+
+  def tile_ref(player_name) do
+    GenServer.call(via_player_registry(player_name), :tile_ref)
   end
 
   @doc """
   Returns a tuple which registers and looks up a player server process by `player_name`.
   """
-  def via_tuple(player_name) do
+  def via_player_registry(player_name) do
     {:via, Registry, {AdventureTime.PlayerRegistry, player_name}}
   end
 
@@ -35,11 +52,18 @@ defmodule AdventureTime.PlayerServer do
   """
   def player_pid(player_name) do
     player_name
-    |> via_tuple()
+    |> via_player_registry()
     |> GenServer.whereis()
   end
 
   # Server functions
+
+  # we can optionally pass a seed when we need to ensure the randomness is predictable, for example during testing
+  def init({player_name, seed}) do
+    :rand.seed(:exsplus, seed)
+
+    init(player_name)
+  end
 
   def init(player_name) do
     player =
@@ -56,5 +80,9 @@ defmodule AdventureTime.PlayerServer do
       end
 
     {:ok, player, @timeout}
+  end
+
+  def handle_call(:tile_ref, _from, player) do
+    {:reply, player.tile_ref, player, @timeout}
   end
 end
