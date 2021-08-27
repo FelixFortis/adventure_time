@@ -30,19 +30,19 @@ defmodule AdventureTime.GameDisplay do
     IO.write("\n")
   end
 
-  defp render_game_tile(game_tile, player) do
+  defp render_game_tile(game_tile, _player) do
     cond do
       game_tile.walkable == false ->
         IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
 
-      length(Map.keys(game_tile.players)) > 1 && game_tile.players[player.tag] == player ->
-        IO.write("#{IO.ANSI.yellow_background()}   #{IO.ANSI.reset()}")
+      # length(Map.keys(game_tile.players)) > 1 && game_tile.players[player.tag] == player ->
+      #   IO.write("#{IO.ANSI.yellow_background()}   #{IO.ANSI.reset()}")
 
-      game_tile.players[player.tag] == player ->
-        IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
+      # game_tile.players[player.tag] == player ->
+      #   IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
 
-      length(Map.keys(game_tile.players)) > 0 ->
-        IO.write("#{IO.ANSI.red_background()}   #{IO.ANSI.reset()}")
+      # length(Map.keys(game_tile.players)) > 0 ->
+      #   IO.write("#{IO.ANSI.red_background()}   #{IO.ANSI.reset()}")
 
       true ->
         IO.write("#{IO.ANSI.white_background()}   #{IO.ANSI.reset()}")
