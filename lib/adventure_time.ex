@@ -10,6 +10,8 @@ defmodule AdventureTime do
       # AdventureTime.PlayerSupervisor
     ]
 
+    :ets.new(:players_table, [:public, :named_table])
+
     opts = [strategy: :one_for_one, name: AdventureTime.Supervisor]
     Supervisor.start_link(children, opts)
   end
