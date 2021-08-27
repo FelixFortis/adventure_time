@@ -7,18 +7,16 @@ defmodule AdventureTime.Player do
   alias AdventureTime.{Player, GameTile, Arena}
 
   @enforce_keys [:name]
-  defstruct [:name, :tag, :tile_ref, :alive]
+  defstruct [:name, :tile_ref, :alive]
 
   @adjectives Application.get_env(:adventure_time, :adjectives)
   @nouns Application.get_env(:adventure_time, :nouns)
 
   def new(name \\ "", tile_ref) do
     player_name = set_player_name(name)
-    tag = parse_player_tag(player_name)
 
     %Player{
       name: player_name,
-      tag: tag,
       tile_ref: tile_ref,
       alive: true
     }
@@ -79,13 +77,6 @@ defmodule AdventureTime.Player do
   defp random(range) when range > 0, do: :rand.uniform(range)
 
   defp sample(array), do: Enum.random(array)
-
-  defp parse_player_tag(player_name) do
-    player_name
-    |> String.downcase()
-    |> String.replace(" ", "_")
-    |> String.to_atom()
-  end
 
   defp set_player_name(name) do
     case name do

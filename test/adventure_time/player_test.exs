@@ -15,7 +15,6 @@ defmodule AdventureTime.PlayerTest do
     test "it creates a new player at the given location", context do
       assert context.player == %Player{
                name: "test player",
-               tag: :test_player,
                tile_ref: {6, 4},
                alive: true
              }
@@ -26,7 +25,6 @@ defmodule AdventureTime.PlayerTest do
     test "it updates the player's location when moving to an adjacent walkable tile", context do
       assert Player.move_to(context.player, {6, 5}) == %Player{
                name: "test player",
-               tag: :test_player,
                tile_ref: {6, 5},
                alive: true
              }
@@ -35,7 +33,6 @@ defmodule AdventureTime.PlayerTest do
     test "it doesn't update the player's location when moving to a non-adjacent tile", context do
       assert Player.move_to(context.player, {6, 6}) == %Player{
                name: "test player",
-               tag: :test_player,
                tile_ref: {6, 4},
                alive: true
              }
@@ -45,7 +42,6 @@ defmodule AdventureTime.PlayerTest do
          context do
       assert Player.move_to(context.player, {6, 3}) == %Player{
                name: "test player",
-               tag: :test_player,
                tile_ref: {6, 4},
                alive: true
              }
@@ -59,7 +55,6 @@ defmodule AdventureTime.PlayerTest do
 
       assert Player.die_and_respawn(context.player) == %Player{
                name: "test player",
-               tag: :test_player,
                tile_ref: {2, 3},
                alive: true
              }

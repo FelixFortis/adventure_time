@@ -35,13 +35,13 @@ defmodule AdventureTime.GameDisplay do
       game_tile.walkable == false ->
         IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
 
-      # length(Map.keys(game_tile.players)) > 1 && game_tile.players[player.tag] == player ->
+      # enemies and player on tile ->
       #   IO.write("#{IO.ANSI.yellow_background()}   #{IO.ANSI.reset()}")
 
-      # game_tile.players[player.tag] == player ->
+      # player alone on tile ->
       #   IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
 
-      # length(Map.keys(game_tile.players)) > 0 ->
+      # enemies but no player on tile ->
       #   IO.write("#{IO.ANSI.red_background()}   #{IO.ANSI.reset()}")
 
       true ->
