@@ -31,6 +31,15 @@ defmodule AdventureTime.ArenaTest do
     end
   end
 
+  describe "random_walkable_tile_ref/0" do
+    test "it returns the tile_ref of a random walkable game tile" do
+      # for this test we need to ensure the randomness is predictable
+      :rand.seed(:exsplus, {100, 101, 102})
+
+      assert Arena.random_walkable_tile_ref() == {2, 3}
+    end
+  end
+
   describe "game_tiles_as_flattened_list/0" do
     test "it returns all game_tiles as a list of maps" do
       assert length(Arena.game_tiles_as_flattened_list()) == 100
