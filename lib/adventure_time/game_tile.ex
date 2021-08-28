@@ -36,6 +36,10 @@ defmodule AdventureTime.GameTile do
     end
   end
 
+  def hero_count(game_tile_ref) do
+    length(check_tile_for_heroes(game_tile_ref))
+  end
+
   defp check_tile_for_hero(game_tile_ref, hero_name) do
     heroes = Hero.all_heroes()
 
