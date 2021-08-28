@@ -5,43 +5,43 @@ defmodule AdventureTime.GameDisplay do
 
   alias AdventureTime.{Arena}
 
-  def render_game(player) do
+  def render_game(hero) do
     IO.write("\n")
-    render_arena(player)
+    render_arena(hero)
     IO.write("\n")
-    render_player_info()
+    render_hero_info()
     IO.write("\n")
   end
 
-  defp render_arena(player) do
+  defp render_arena(hero) do
     Arena.game_tiles_as_flattened_list()
     |> Enum.chunk_every(10)
     |> Enum.each(fn arena_row ->
-      render_arena_row(arena_row, player)
+      render_arena_row(arena_row, hero)
     end)
   end
 
-  defp render_arena_row(row, player) do
+  defp render_arena_row(row, hero) do
     row
     |> Enum.each(fn game_tile ->
-      render_game_tile(game_tile, player)
+      render_game_tile(game_tile, hero)
     end)
 
     IO.write("\n")
   end
 
-  defp render_game_tile(game_tile, _player) do
+  defp render_game_tile(game_tile, _hero) do
     cond do
       game_tile.walkable == false ->
         IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
 
-      # enemies and player on tile ->
+      # enemies and hero on tile ->
       #   IO.write("#{IO.ANSI.yellow_background()}   #{IO.ANSI.reset()}")
 
-      # player alone on tile ->
+      # hero alone on tile ->
       #   IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
 
-      # enemies but no player on tile ->
+      # enemies but no hero on tile ->
       #   IO.write("#{IO.ANSI.red_background()}   #{IO.ANSI.reset()}")
 
       true ->
@@ -49,7 +49,7 @@ defmodule AdventureTime.GameDisplay do
     end
   end
 
-  defp render_player_info do
-    # retrieve players from registry?
+  defp render_hero_info do
+    # retrieve heroes from registry?
   end
 end

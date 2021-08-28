@@ -175,4 +175,8 @@ defmodule AdventureTime.Arena do
       Enum.member?(walkable_tile_refs(), tile_ref)
     end)
   end
+
+  def enemies(_tile_ref) do
+    # get a list of enemy heroes on adjacent tiles
+  end
 end

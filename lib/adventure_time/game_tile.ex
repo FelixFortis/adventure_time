@@ -14,10 +14,6 @@ defmodule AdventureTime.GameTile do
     |> Enum.find(fn game_tile -> game_tile.tile_ref == tile_ref end)
   end
 
-  def players(_tile_ref) do
-    # get a list of players on adjacent tiles
-  end
-
   def walkable?(tile_ref) do
     game_tile = find_by_tile_ref(tile_ref)
 

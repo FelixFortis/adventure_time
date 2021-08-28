@@ -1,10 +1,10 @@
-defmodule AdventureTime.Player do
+defmodule AdventureTime.Hero do
   @moduledoc """
-  A player struct and the main component of the game - contains the location and status of the player
-  Module contains functions around player actions like movement.
+  A hero struct and the main component of the game - contains the location and status of the hero
+  Module contains functions around hero actions like movement.
   """
 
-  alias AdventureTime.{Player, GameTile, Arena}
+  alias AdventureTime.{Hero, GameTile, Arena}
 
   @enforce_keys [:name]
   defstruct [:name, :tile_ref, :alive]
@@ -13,29 +13,29 @@ defmodule AdventureTime.Player do
   @nouns Application.get_env(:adventure_time, :nouns)
 
   def new(name \\ "", tile_ref) do
-    player_name = set_player_name(name)
+    hero_name = set_hero_name(name)
 
-    %Player{
-      name: player_name,
+    %Hero{
+      name: hero_name,
       tile_ref: tile_ref,
       alive: true
     }
   end
 
-  def die_and_respawn(player) do
-    player
+  def die_and_respawn(hero) do
+    hero
     |> mark_as_dead()
     |> respawn_cooldown()
     |> mark_as_alive()
     |> respawn()
   end
 
-  def move_to(player, new_tile_ref) do
-    if GameTile.walkable?(new_tile_ref) && Arena.adjacent?(player.tile_ref, new_tile_ref) do
-      player
+  def move_to(hero, new_tile_ref) do
+    if GameTile.walkable?(new_tile_ref) && Arena.adjacent?(hero.tile_ref, new_tile_ref) do
+      hero
       |> insert_at(new_tile_ref)
     else
-      player
+      hero
     end
   end
 
@@ -49,28 +49,28 @@ defmodule AdventureTime.Player do
     |> Enum.join(delimiter)
   end
 
-  defp mark_as_dead(player) do
-    player
+  defp mark_as_dead(hero) do
+    hero
     |> Map.put(:alive, false)
   end
 
-  defp mark_as_alive(player) do
-    player
+  defp mark_as_alive(hero) do
+    hero
     |> Map.put(:alive, true)
   end
 
-  defp respawn_cooldown(player) do
+  defp respawn_cooldown(hero) do
     :timer.seconds(5)
-    player
+    hero
   end
 
-  defp respawn(player) do
-    player
+  defp respawn(hero) do
+    hero
     |> insert_at(Arena.random_walkable_tile_ref())
   end
 
-  defp insert_at(player, new_tile_ref) do
-    player
+  defp insert_at(hero, new_tile_ref) do
+    hero
     |> Map.put(:tile_ref, new_tile_ref)
   end
 
@@ -78,7 +78,7 @@ defmodule AdventureTime.Player do
 
   defp sample(array), do: Enum.random(array)
 
-  defp set_player_name(name) do
+  defp set_hero_name(name) do
     case name do
       "" ->
         random_name()
