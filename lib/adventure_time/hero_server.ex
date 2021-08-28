@@ -35,6 +35,13 @@ defmodule AdventureTime.HeroServer do
     )
   end
 
+  def all_heroes do
+    :ets.tab2list(:heroes_table)
+    |> Enum.map(fn {_hero_name, hero} ->
+      hero
+    end)
+  end
+
   def tile_ref(hero_name) do
     GenServer.call(via_hero_registry(hero_name), :tile_ref)
   end

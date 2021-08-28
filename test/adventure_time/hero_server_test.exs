@@ -8,7 +8,9 @@ defmodule HeroServerTest do
   setup do
     [
       hero_name: Hero.random_name(),
-      seed: {100, 101, 102}
+      hero_name2: Hero.random_name(),
+      seed: {100, 101, 102},
+      seed2: {100, 101, 103}
     ]
   end
 
@@ -63,6 +65,20 @@ defmodule HeroServerTest do
       moved_hero = HeroServer.move_to(context.hero_name, new_tile_ref)
 
       assert moved_hero.tile_ref == {2, 3}
+    end
+  end
+
+  describe "all_heroes/0" do
+    test "it returns a list of all heroes in play", context do
+      {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
+      {:ok, _pid} = HeroServer.start_link(context.hero_name2, context.seed2)
+
+      assert length(HeroServer.all_heroes()) == 2
+
+      assert HeroServer.all_heroes() |> Enum.map(fn hero -> hero.tile_ref end) == [
+               {2, 3},
+               {5, 4}
+             ]
     end
   end
 end
