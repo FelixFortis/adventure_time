@@ -93,7 +93,7 @@ defmodule AdventureTime.HeroServer do
           hero
       end
 
-    Logger.info("'#{hero_name}' hero server process spawned.")
+    # Logger.info("'#{hero_name}' hero server process spawned.")
 
     {:ok, hero, @timeout}
   end
