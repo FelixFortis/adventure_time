@@ -137,8 +137,19 @@ defmodule AdventureTime.Arena do
     |> Enum.map(fn game_tile -> game_tile.tile_ref end)
   end
 
-  def random_walkable_tile_ref do
+  def random_walkable_tile_ref() do
     Enum.random(walkable_tile_refs())
+  end
+
+  def walkable_tile_refs_except(current_tile_ref) do
+    game_tiles_as_flattened_list()
+    |> Enum.filter(fn game_tile -> game_tile.walkable == true end)
+    |> Enum.filter(fn game_tile -> game_tile.tile_ref != current_tile_ref end)
+    |> Enum.map(fn game_tile -> game_tile.tile_ref end)
+  end
+
+  def random_walkable_tile_ref_except(current_tile_ref) do
+    Enum.random(walkable_tile_refs_except(current_tile_ref))
   end
 
   def game_tiles_as_flattened_list do

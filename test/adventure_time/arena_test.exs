@@ -31,12 +31,37 @@ defmodule AdventureTime.ArenaTest do
     end
   end
 
+  describe "walkable_tile_refs_except/1" do
+    test "it returns a list of walkable grid references, not including the passed in tile_ref" do
+      current_tile_ref = {2, 3}
+      tile_refs = Arena.walkable_tile_refs_except(current_tile_ref)
+
+      tile_refs
+      |> Enum.each(fn tile_ref ->
+        game_tile = GameTile.find_by_tile_ref(tile_ref)
+
+        assert game_tile.walkable == true
+        assert game_tile.tile_ref != current_tile_ref
+      end)
+    end
+  end
+
   describe "random_walkable_tile_ref/0" do
     test "it returns the tile_ref of a random walkable game tile" do
       # for this test we need to ensure the randomness is predictable
       :rand.seed(:exsplus, {100, 101, 102})
 
       assert Arena.random_walkable_tile_ref() == {2, 3}
+    end
+  end
+
+  describe "random_walkable_tile_ref_except/1" do
+    test "it returns the tile_ref of a random walkable game tile, excluding the passed in tile_ref" do
+      # for this test we need to ensure the randomness is predictable
+      # using this seed would normally force the tile_ref to be {2, 3}
+      :rand.seed(:exsplus, {100, 101, 102})
+
+      assert Arena.random_walkable_tile_ref_except({2, 3}) == {2, 4}
     end
   end
 
