@@ -52,14 +52,14 @@ defmodule AdventureTime.HeroTest do
     end
   end
 
-  describe "die_and_respawn/1" do
-    test "the hero is set to dead", context do
+  describe "die_and_respawn/2" do
+    test "the hero respawns on a different random tile", context do
       # for this test we need to ensure the randomness is predictable
       :rand.seed(:exsplus, {100, 101, 102})
 
-      assert Hero.die_and_respawn(context.hero) == %Hero{
+      assert Hero.die_and_respawn(context.hero, {2, 3}) == %Hero{
                name: "test hero",
-               tile_ref: {2, 3},
+               tile_ref: {2, 4},
                alive: true
              }
     end

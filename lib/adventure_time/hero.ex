@@ -29,12 +29,12 @@ defmodule AdventureTime.Hero do
     end)
   end
 
-  def die_and_respawn(hero) do
+  def die_and_respawn(hero, current_tile_ref) do
     hero
     |> mark_as_dead()
     |> respawn_cooldown()
     |> mark_as_alive()
-    |> respawn()
+    |> respawn(current_tile_ref)
   end
 
   def move_to(hero, new_tile_ref) do
@@ -71,9 +71,9 @@ defmodule AdventureTime.Hero do
     hero
   end
 
-  defp respawn(hero) do
+  defp respawn(hero, current_tile_ref) do
     hero
-    |> insert_at(Arena.random_walkable_tile_ref())
+    |> insert_at(Arena.random_walkable_tile_ref_except(current_tile_ref))
   end
 
   defp insert_at(hero, new_tile_ref) do

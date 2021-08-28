@@ -44,25 +44,39 @@ defmodule HeroServerTest do
     test "to an adjacent walkable game_tile should succeed", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       new_tile_ref = {2, 4}
-      moved_hero = HeroServer.move_to(context.hero_name, new_tile_ref)
+      HeroServer.move_to(context.hero_name, new_tile_ref)
+      moved_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
 
-      assert moved_hero.tile_ref == {2, 4}
+      assert moved_hero_tile_ref == {2, 4}
     end
 
     test "to a non-adjacent game_tile should fail", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       new_tile_ref = {2, 5}
-      moved_hero = HeroServer.move_to(context.hero_name, new_tile_ref)
+      HeroServer.move_to(context.hero_name, new_tile_ref)
+      moved_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
 
-      assert moved_hero.tile_ref == {2, 3}
+      assert moved_hero_tile_ref == {2, 3}
     end
 
     test "to an adjacent non-walkable game_tile should fail", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       new_tile_ref = {1, 3}
-      moved_hero = HeroServer.move_to(context.hero_name, new_tile_ref)
+      HeroServer.move_to(context.hero_name, new_tile_ref)
+      moved_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
 
-      assert moved_hero.tile_ref == {2, 3}
+      assert moved_hero_tile_ref == {2, 3}
+    end
+  end
+
+  describe "a hero dying and respawning" do
+    test "the player reappears on a random walkable tile", context do
+      {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
+      current_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
+      respawned_hero = HeroServer.die_and_respawn(context.hero_name, current_hero_tile_ref)
+      new_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
+
+      assert current_hero_tile_ref != new_hero_tile_ref
     end
   end
 end
