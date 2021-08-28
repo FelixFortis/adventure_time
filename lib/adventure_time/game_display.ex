@@ -35,14 +35,16 @@ defmodule AdventureTime.GameDisplay do
       game_tile.walkable == false ->
         IO.write("#{IO.ANSI.blue_background()}   #{IO.ANSI.reset()}")
 
-      # GameTile.heroes_on_tile?(game_tile.tile_ref) && GameTile.hero_on_tile?(game_tile.tile_ref, hero_name) ->
-      #   IO.write("#{IO.ANSI.yellow_background()}   #{IO.ANSI.reset()}")
+      GameTile.hero_count(game_tile.tile_ref) > 1 && GameTile.heroes_on_tile?(game_tile.tile_ref) &&
+          GameTile.hero_on_tile?(game_tile.tile_ref, hero_name) ->
+        IO.write("#{IO.ANSI.yellow_background()}   #{IO.ANSI.reset()}")
 
-      # GameTile.hero_on_tile?(game_tile.tile_ref, hero_name) ->
-      #   IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
+      GameTile.hero_count(game_tile.tile_ref) == 1 &&
+          GameTile.hero_on_tile?(game_tile.tile_ref, hero_name) ->
+        IO.write("#{IO.ANSI.green_background()}   #{IO.ANSI.reset()}")
 
-      # GameTile.heroes_on_tile?(game_tile.tile_ref) ->
-      #   IO.write("#{IO.ANSI.red_background()}   #{IO.ANSI.reset()}")
+      GameTile.heroes_on_tile?(game_tile.tile_ref) ->
+        IO.write("#{IO.ANSI.red_background()}   #{IO.ANSI.reset()}")
 
       true ->
         IO.write("#{IO.ANSI.white_background()}   #{IO.ANSI.reset()}")
