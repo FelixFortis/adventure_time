@@ -17,22 +17,22 @@ defmodule HeroServerTest do
       assert({:ok, _pid} = HeroServer.start_link(context.hero_name))
     end
 
-    test "hero processes are unique by name", context do
+    test "the hero process is registered as unique using the passed in name", context do
       assert {:ok, _pid} = HeroServer.start_link(context.hero_name)
 
       assert {:error, _reason} = HeroServer.start_link(context.hero_name)
     end
   end
 
-  describe "returning hero attributes" do
-    test "finding a hero's game_tile location", context do
+  describe "querying hero attributes" do
+    test "returns a hero's game_tile location", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       hero_tile_ref = HeroServer.tile_ref(context.hero_name)
 
       assert hero_tile_ref == {2, 3}
     end
 
-    test "finding a hero's alive status", context do
+    test "returns a hero's alive status", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       hero_alive_status = HeroServer.alive?(context.hero_name)
 
@@ -41,7 +41,7 @@ defmodule HeroServerTest do
   end
 
   describe "moving a hero" do
-    test "to an adjacent walkable game_tile", context do
+    test "to an adjacent walkable game_tile should succeed", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       new_tile_ref = {2, 4}
       moved_hero = HeroServer.move_to(context.hero_name, new_tile_ref)
@@ -49,7 +49,7 @@ defmodule HeroServerTest do
       assert moved_hero.tile_ref == {2, 4}
     end
 
-    test "to a non-adjacent game_tile", context do
+    test "to a non-adjacent game_tile should fail", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       new_tile_ref = {2, 5}
       moved_hero = HeroServer.move_to(context.hero_name, new_tile_ref)
@@ -57,7 +57,7 @@ defmodule HeroServerTest do
       assert moved_hero.tile_ref == {2, 3}
     end
 
-    test "to an adjacent non-walkable game_tile", context do
+    test "to an adjacent non-walkable game_tile should fail", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       new_tile_ref = {1, 3}
       moved_hero = HeroServer.move_to(context.hero_name, new_tile_ref)
