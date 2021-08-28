@@ -4,7 +4,7 @@ defmodule AdventureTime.GameTile do
   Module contains functions around dealing with tiles on an individual basis
   """
 
-  alias AdventureTime.{Arena, HeroServer}
+  alias AdventureTime.{Arena, Hero}
 
   @enforce_keys [:tile_ref, :walkable]
   defstruct [:tile_ref, :walkable]
@@ -27,8 +27,17 @@ defmodule AdventureTime.GameTile do
     end
   end
 
+  def heroes_on_tile?(game_tile_ref) do
+    heroes_on_tile = check_tile_for_heroes(game_tile_ref)
+
+    case length(heroes_on_tile) do
+      0 -> false
+      _ -> true
+    end
+  end
+
   defp check_tile_for_hero(game_tile_ref, hero_name) do
-    heroes = HeroServer.all_heroes()
+    heroes = Hero.all_heroes()
 
     heroes
     |> Enum.filter(fn hero ->
@@ -36,6 +45,15 @@ defmodule AdventureTime.GameTile do
     end)
     |> Enum.find(fn hero ->
       hero.name == hero_name
+    end)
+  end
+
+  defp check_tile_for_heroes(game_tile_ref) do
+    heroes = Hero.all_heroes()
+
+    heroes
+    |> Enum.filter(fn hero ->
+      hero.tile_ref == game_tile_ref
     end)
   end
 end

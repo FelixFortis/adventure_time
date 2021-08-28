@@ -22,6 +22,13 @@ defmodule AdventureTime.Hero do
     }
   end
 
+  def all_heroes do
+    :ets.tab2list(:heroes_table)
+    |> Enum.map(fn {_hero_name, hero} ->
+      hero
+    end)
+  end
+
   def die_and_respawn(hero) do
     hero
     |> mark_as_dead()
