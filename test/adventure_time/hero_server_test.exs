@@ -73,7 +73,7 @@ defmodule HeroServerTest do
     test "the player reappears on a random walkable tile", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       current_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
-      respawned_hero = HeroServer.die_and_respawn(context.hero_name, current_hero_tile_ref)
+      HeroServer.die_and_respawn(context.hero_name, current_hero_tile_ref)
       new_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
 
       assert current_hero_tile_ref != new_hero_tile_ref
