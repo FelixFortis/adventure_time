@@ -167,10 +167,10 @@ defmodule AdventureTime.Arena do
     new_tile_ref in interactable_tile_refs(current_tile_ref)
   end
 
-  def interactable_tile_refs(current_tile_ref) do
+  def adjacent_tile_refs(current_tile_ref) do
     {y_axis, x_axis} = current_tile_ref
 
-    potential_tile_refs = [
+    [
       {y_axis - 1, x_axis - 1},
       {y_axis - 1, x_axis},
       {y_axis - 1, x_axis + 1},
@@ -181,13 +181,23 @@ defmodule AdventureTime.Arena do
       {y_axis + 1, x_axis},
       {y_axis + 1, x_axis + 1}
     ]
+  end
+
+  def interactable_tile_refs(current_tile_ref) do
+    potential_tile_refs = adjacent_tile_refs(current_tile_ref)
 
     Enum.filter(potential_tile_refs, fn tile_ref ->
       Enum.member?(walkable_tile_refs(), tile_ref)
     end)
   end
 
-  def enemies(_tile_ref) do
-    # get a list of enemy heroes on adjacent tiles
+  def adjacent_heroes(game_tile_ref) do
+    potential_tile_refs = interactable_tile_refs(game_tile_ref)
+
+    potential_tile_refs
+    |> Enum.map(fn game_tile_ref ->
+      GameTile.heroes_on_tile(game_tile_ref)
+    end)
+    |> List.flatten()
   end
 end
