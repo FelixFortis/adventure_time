@@ -144,6 +144,19 @@ defmodule AdventureTime.HeroServer do
     {:reply, hero, hero, @timeout}
   end
 
+  def handle_info(:timeout, hero) do
+    {:stop, {:shutdown, :timeout}, hero}
+  end
+
+  def terminate({:shutdown, :timeout}, hero) do
+    :ets.delete(:heroes_table, hero.name)
+    :ok
+  end
+
+  def terminate(_reason, _hero) do
+    :ok
+  end
+
   defp respawn_nearby_enemy_heroes(enemy_heroes) do
     enemy_heroes
     |> Enum.each(fn enemy_hero ->
