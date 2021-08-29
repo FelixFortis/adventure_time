@@ -47,8 +47,8 @@ defmodule AdventureTime.HeroServer do
     GenServer.call(via_hero_registry(hero_name), {:move_to, new_tile_ref})
   end
 
-  def die_and_respawn(hero_name, current_tile_ref) do
-    GenServer.call(via_hero_registry(hero_name), {:die_and_respawn, current_tile_ref})
+  def die_and_respawn(hero_name) do
+    GenServer.call(via_hero_registry(hero_name), {:die_and_respawn})
   end
 
   @doc """
@@ -111,8 +111,8 @@ defmodule AdventureTime.HeroServer do
     {:reply, moved_hero, moved_hero, @timeout}
   end
 
-  def handle_call({:die_and_respawn, current_tile_ref}, _from, hero) do
-    respawned_hero = AdventureTime.Hero.die_and_respawn(hero, current_tile_ref)
+  def handle_call({:die_and_respawn}, _from, hero) do
+    respawned_hero = AdventureTime.Hero.die_and_respawn(hero, hero.tile_ref)
 
     :ets.insert(:heroes_table, {hero.name, respawned_hero})
 
