@@ -57,7 +57,11 @@ defmodule AdventureTime.HeroServer do
   end
 
   def die_and_respawn(hero_name) do
-    GenServer.call(via_hero_registry(hero_name), {:die_and_respawn})
+    GenServer.call(via_hero_registry(hero_name), :die_and_respawn)
+  end
+
+  def attack(hero_name) do
+    GenServer.call(via_hero_registry(hero_name), :attack)
   end
 
   @doc """
@@ -113,18 +117,38 @@ defmodule AdventureTime.HeroServer do
   end
 
   def handle_call({:move_to, new_tile_ref}, _from, hero) do
-    moved_hero = AdventureTime.Hero.move_to(hero, new_tile_ref)
+    moved_hero = Hero.move_to(hero, new_tile_ref)
 
     :ets.insert(:heroes_table, {hero.name, moved_hero})
 
     {:reply, moved_hero, moved_hero, @timeout}
   end
 
-  def handle_call({:die_and_respawn}, _from, hero) do
-    respawned_hero = AdventureTime.Hero.die_and_respawn(hero, hero.tile_ref)
+  def handle_call(:die_and_respawn, _from, hero) do
+    respawned_hero = Hero.die_and_respawn(hero, hero.tile_ref)
 
     :ets.insert(:heroes_table, {hero.name, respawned_hero})
 
     {:reply, respawned_hero, respawned_hero, @timeout}
+  end
+
+  def handle_call(:attack, _from, hero) do
+    IO.inspect(all_heroes())
+    nearby_heroes = Arena.adjacent_heroes(hero.tile_ref)
+
+    nearby_heroes
+    |> Enum.filter(fn nearby_hero ->
+      nearby_hero.name != hero.name
+    end)
+    |> respawn_nearby_enemy_heroes()
+
+    {:reply, hero, hero, @timeout}
+  end
+
+  defp respawn_nearby_enemy_heroes(enemy_heroes) do
+    enemy_heroes
+    |> Enum.each(fn enemy_hero ->
+      GenServer.call(via_hero_registry(enemy_hero.name), :die_and_respawn)
+    end)
   end
 end

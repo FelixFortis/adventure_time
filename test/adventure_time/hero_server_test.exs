@@ -87,10 +87,12 @@ defmodule HeroServerTest do
 
   describe "a hero dying and respawning" do
     test "the hero reappears on a random walkable tile", context do
-      {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
-      current_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
-      HeroServer.die_and_respawn(context.hero_name)
-      new_hero_tile_ref = HeroServer.tile_ref(context.hero_name)
+      respawning_hero_name = "respawning_hero"
+
+      {:ok, _pid} = HeroServer.start_link(respawning_hero_name, context.seed)
+      current_hero_tile_ref = HeroServer.tile_ref(respawning_hero_name)
+      HeroServer.die_and_respawn(respawning_hero_name)
+      new_hero_tile_ref = HeroServer.tile_ref(respawning_hero_name)
 
       assert current_hero_tile_ref != new_hero_tile_ref
     end
@@ -99,48 +101,39 @@ defmodule HeroServerTest do
   describe "a hero attacking other heroes" do
     test "when the enemy hero is on the same tile as our hero, they die and respawn", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
-      # this enemy will stay on the same tile as the hero and will be killed when the hero attacks
-      {:ok, _pid} = HeroServer.start_link(context.enemy_hero_name, context.seed)
-      current_enemy_tile_ref = HeroServer.tile_ref(context.enemy_hero_name)
+
+      {same_tile_enemy, adjacent_tile_enemy, non_adjacent_tile_enemy} =
+        setup_enemies_for_hero_attack(context)
+
+      current_same_tile_enemy_tile_ref = HeroServer.tile_ref(same_tile_enemy)
+      current_adjacent_tile_enemy_tile_ref = HeroServer.tile_ref(adjacent_tile_enemy)
+      current_non_adjacent_tile_enemy_tile_ref = HeroServer.tile_ref(non_adjacent_tile_enemy)
+
       HeroServer.attack(context.hero_name)
-      new_enemy_tile_ref = HeroServer.tile_ref(context.enemy_hero_name)
 
-      assert current_enemy_tile_ref != new_enemy_tile_ref
+      new_same_tile_enemy_tile_ref = HeroServer.tile_ref(same_tile_enemy)
+      new_adjacent_tile_enemy_tile_ref = HeroServer.tile_ref(adjacent_tile_enemy)
+      new_non_adjacent_tile_enemy_tile_ref = HeroServer.tile_ref(non_adjacent_tile_enemy)
+
+      assert current_same_tile_enemy_tile_ref != new_same_tile_enemy_tile_ref
+      assert current_adjacent_tile_enemy_tile_ref != new_adjacent_tile_enemy_tile_ref
+      assert current_non_adjacent_tile_enemy_tile_ref == new_non_adjacent_tile_enemy_tile_ref
     end
+  end
 
-    test "when the enemy hero is on an adjacent tile to our hero, they die and respawn",
-         context do
-      # passing a seed to :rand means that heroes will all spawn on tile_ref {2, 3}
-      # our hero
-      {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
+  defp setup_enemies_for_hero_attack(context) do
+    same_tile_enemy = "same_tile_enemy"
+    {:ok, _pid} = HeroServer.start_link(same_tile_enemy, context.seed)
 
-      # this enemy will move to an adjacent tile to the hero and will be killed when the hero attacks
-      {:ok, _pid} = HeroServer.start_link(context.enemy_hero_name, context.seed)
+    adjacent_tile_enemy = "adjacent_tile_enemy"
+    {:ok, _pid} = HeroServer.start_link(adjacent_tile_enemy, context.seed)
+    HeroServer.move_to(adjacent_tile_enemy, {2, 4})
 
-      HeroServer.move_to(context.enemy_hero_name, {2, 4})
-      current_enemy_tile_ref = HeroServer.tile_ref(context.enemy_hero_name)
-      HeroServer.attack(context.hero_name)
-      new_enemy_tile_ref = HeroServer.tile_ref(context.enemy_hero_name)
+    non_adjacent_tile_enemy = "non_adjacent_tile_enemy"
+    {:ok, _pid} = HeroServer.start_link(non_adjacent_tile_enemy, context.seed)
+    HeroServer.move_to(non_adjacent_tile_enemy, {2, 4})
+    HeroServer.move_to(non_adjacent_tile_enemy, {2, 5})
 
-      assert current_enemy_tile_ref != new_enemy_tile_ref
-    end
-
-    test "when the enemy hero is not on an adjacent tile to our hero, they are unaffected by our hero's attack",
-         context do
-      # passing a seed to :rand means that heroes will all spawn on tile_ref {2, 3}
-      # our hero
-      {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
-
-      # this enemy will move away to a non-adjacent tile to the hero and will not be killed when the hero attacks
-      {:ok, _pid} = HeroServer.start_link(context.enemy_hero_name, context.seed)
-
-      HeroServer.move_to(context.enemy_hero_name, {2, 4})
-      HeroServer.move_to(context.enemy_hero_name, {2, 5})
-      current_enemy_tile_ref = HeroServer.tile_ref(context.enemy_hero_name)
-      HeroServer.attack(context.hero_name)
-      new_enemy_tile_ref = HeroServer.tile_ref(context.enemy_hero_name)
-
-      assert current_enemy_tile_ref == new_enemy_tile_ref
-    end
+    {same_tile_enemy, adjacent_tile_enemy, non_adjacent_tile_enemy}
   end
 end
