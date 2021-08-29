@@ -31,12 +31,15 @@ defmodule AdventureTime.Hero do
     end
   end
 
-  def die_and_respawn(hero, current_tile_ref) do
+  def die(hero) do
     hero
     |> mark_as_dead()
-    |> respawn_cooldown()
+  end
+
+  def respawn(hero) do
+    hero
     |> mark_as_alive()
-    |> respawn(current_tile_ref)
+    |> insert_at(Arena.random_walkable_tile_ref_except(hero.tile_ref))
   end
 
   def random_name(range \\ 9999, delimiter \\ "_") do
@@ -57,16 +60,6 @@ defmodule AdventureTime.Hero do
   defp mark_as_alive(hero) do
     hero
     |> Map.put(:alive, true)
-  end
-
-  defp respawn_cooldown(hero) do
-    :timer.seconds(5)
-    hero
-  end
-
-  defp respawn(hero, current_tile_ref) do
-    hero
-    |> insert_at(Arena.random_walkable_tile_ref_except(current_tile_ref))
   end
 
   defp insert_at(hero, new_tile_ref) do
