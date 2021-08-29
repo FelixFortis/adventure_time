@@ -6,8 +6,8 @@ defmodule AdventureTime do
   @impl true
   def start(_type, _args) do
     children = [
-      {Registry, keys: :unique, name: AdventureTime.HeroRegistry}
-      # AdventureTime.HeroSupervisor
+      {Registry, keys: :unique, name: AdventureTime.HeroRegistry},
+      AdventureTime.HeroSupervisor
     ]
 
     :ets.new(:heroes_table, [:public, :named_table])
