@@ -37,6 +37,49 @@ defmodule HeroServerTest do
     end
   end
 
+  describe "ETS storage of HeroServer stat" do
+    test "it stores the initial state of the new HeroServer process", context do
+      HeroServer.start_link("stored_hero", context.seed)
+
+      assert :ets.lookup(:heroes_table, "stored_hero") == [
+               {"stored_hero",
+                %AdventureTime.Hero{alive: true, name: "stored_hero", tile_ref: {2, 3}}}
+             ]
+    end
+
+    test "it can update the state of the new HeroServer process", context do
+      HeroServer.start_link("stored_hero", context.seed)
+      HeroServer.move_to("stored_hero", {2, 4})
+
+      assert :ets.lookup(:heroes_table, "stored_hero") == [
+               {"stored_hero",
+                %AdventureTime.Hero{alive: true, name: "stored_hero", tile_ref: {2, 4}}}
+             ]
+    end
+
+    test "restarted HeroServer processes restore their state from ETS", context do
+      HeroServer.start_link("stored_hero", context.seed)
+      HeroServer.start_link("stored_hero", {200, 201, 202})
+
+      assert :ets.lookup(:heroes_table, "stored_hero") == [
+               {"stored_hero",
+                %AdventureTime.Hero{alive: true, name: "stored_hero", tile_ref: {2, 3}}}
+             ]
+    end
+  end
+
+  describe "hero_pid" do
+    test "returns a PID if the HeroServer process has been registered", context do
+      {:ok, pid} = HeroServer.start_link(context.hero_name)
+
+      assert ^pid = HeroServer.hero_pid(context.hero_name)
+    end
+
+    test "returns nil if the HeroServer process does not exist" do
+      refute HeroServer.hero_pid("i_dont_exist")
+    end
+  end
+
   describe "all_heroes/0" do
     test "it returns a list of all heroes in play", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
