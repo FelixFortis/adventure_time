@@ -22,11 +22,13 @@ defmodule AdventureTime.Hero do
     }
   end
 
-  def all_heroes do
-    :ets.tab2list(:heroes_table)
-    |> Enum.map(fn {_hero_name, hero} ->
+  def move_to(hero, new_tile_ref) do
+    if GameTile.walkable?(new_tile_ref) && Arena.adjacent?(hero.tile_ref, new_tile_ref) do
       hero
-    end)
+      |> insert_at(new_tile_ref)
+    else
+      hero
+    end
   end
 
   def die_and_respawn(hero, current_tile_ref) do
@@ -35,15 +37,6 @@ defmodule AdventureTime.Hero do
     |> respawn_cooldown()
     |> mark_as_alive()
     |> respawn(current_tile_ref)
-  end
-
-  def move_to(hero, new_tile_ref) do
-    if GameTile.walkable?(new_tile_ref) && Arena.adjacent?(hero.tile_ref, new_tile_ref) do
-      hero
-      |> insert_at(new_tile_ref)
-    else
-      hero
-    end
   end
 
   def random_name(range \\ 9999, delimiter \\ "_") do

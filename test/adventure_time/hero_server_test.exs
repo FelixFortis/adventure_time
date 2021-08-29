@@ -6,10 +6,15 @@ defmodule HeroServerTest do
   alias AdventureTime.{Hero, HeroServer}
 
   setup do
+    seed = {101, 102, 103}
+    :rand.seed(:exsplus, seed)
+    hero_name = Hero.random_name()
+    hero_name_2 = Hero.random_name()
+
     [
-      hero_name: Hero.random_name(),
-      enemy_hero_name: Hero.random_name(),
-      seed: {100, 101, 102}
+      hero_name: hero_name,
+      hero_name_2: hero_name_2,
+      seed: seed
     ]
   end
 
@@ -22,6 +27,16 @@ defmodule HeroServerTest do
       assert {:ok, _pid} = HeroServer.start_link(context.hero_name)
 
       assert {:error, _reason} = HeroServer.start_link(context.hero_name)
+    end
+  end
+
+  describe "all_heroes/0" do
+    test "it returns a list of all heroes in play", context do
+      {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
+      {:ok, _pid} = HeroServer.start_link(context.hero_name_2, context.seed)
+
+      assert length(HeroServer.all_heroes()) >= 2
+      assert hd(HeroServer.all_heroes()).__struct__ == Hero
     end
   end
 

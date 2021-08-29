@@ -1,4 +1,6 @@
 defmodule AdventureTime.HeroServer do
+  alias AdventureTime.{Hero, Arena}
+
   @moduledoc """
   A hero server process that holds a `Hero` struct as its state.
   """
@@ -33,6 +35,13 @@ defmodule AdventureTime.HeroServer do
       {hero_name, seed},
       name: via_hero_registry(hero_name)
     )
+  end
+
+  def all_heroes do
+    :ets.tab2list(:heroes_table)
+    |> Enum.map(fn {_hero_name, hero} ->
+      hero
+    end)
   end
 
   def tile_ref(hero_name) do
@@ -81,7 +90,7 @@ defmodule AdventureTime.HeroServer do
     hero =
       case :ets.lookup(:heroes_table, hero_name) do
         [] ->
-          hero = AdventureTime.Hero.new(hero_name, AdventureTime.Arena.random_walkable_tile_ref())
+          hero = Hero.new(hero_name, Arena.random_walkable_tile_ref())
 
           :ets.insert(:heroes_table, {hero_name, hero})
           hero

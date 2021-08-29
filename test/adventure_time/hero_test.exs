@@ -64,17 +64,4 @@ defmodule AdventureTime.HeroTest do
              }
     end
   end
-
-  describe "all_heroes/0" do
-    test "it returns a list of all heroes in play", context do
-      {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
-      {:ok, _pid} = HeroServer.start_link(context.hero_name2, context.seed2)
-
-      assert length(Hero.all_heroes()) == 2
-
-      hero_tile_refs = Hero.all_heroes() |> Enum.map(fn hero -> hero.tile_ref end)
-      expected_tile_refs = [{2, 3}, {5, 4}]
-      assert hero_tile_refs -- expected_tile_refs == []
-    end
-  end
 end
