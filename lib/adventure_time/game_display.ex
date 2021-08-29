@@ -3,13 +3,13 @@ defmodule AdventureTime.GameDisplay do
   A module for the purposes of rendering the game in IEX to aid development
   """
 
-  alias AdventureTime.{Arena, GameTile}
+  alias AdventureTime.{HeroServer, Arena, GameTile}
 
   def render_game(hero_name) do
     IO.write("\n")
     render_arena(hero_name)
     IO.write("\n")
-    render_hero_info()
+    render_hero_info(hero_name)
     IO.write("\n")
   end
 
@@ -51,7 +51,21 @@ defmodule AdventureTime.GameDisplay do
     end
   end
 
-  defp render_hero_info do
-    # retrieve heroes from registry?
+  defp render_hero_info(hero_name) do
+    heroes = HeroServer.all_heroes()
+
+    heroes
+    |> Enum.sort()
+    |> Enum.each(fn hero ->
+      if hero.name == hero_name do
+        IO.write("#{IO.ANSI.green()}#{hero_info(hero)}#{IO.ANSI.reset()}")
+      else
+        IO.write(hero_info(hero))
+      end
+    end)
+  end
+
+  defp hero_info(hero) do
+    "#{hero.name} - {#{elem(hero.tile_ref, 0)}, #{elem(hero.tile_ref, 1)}}\n"
   end
 end
