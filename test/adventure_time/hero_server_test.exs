@@ -8,6 +8,9 @@ defmodule HeroServerTest do
   setup do
     Application.stop(:adventure_time)
     :ok = Application.start(:adventure_time)
+  end
+
+  setup do
     seed = {101, 102, 103}
     :rand.seed(:exsplus, seed)
     hero_name = Hero.random_name()
