@@ -133,7 +133,6 @@ defmodule AdventureTime.HeroServer do
   end
 
   def handle_call(:attack, _from, hero) do
-    IO.inspect(all_heroes())
     nearby_heroes = Arena.adjacent_heroes(hero.tile_ref)
 
     nearby_heroes
