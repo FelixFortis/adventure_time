@@ -11,7 +11,7 @@ defmodule HeroServerTest do
   end
 
   setup do
-    seed = {101, 102, 103}
+    seed = {100, 101, 102}
     :rand.seed(:exsplus, seed)
     hero_name = Hero.random_name()
     hero_name_2 = Hero.random_name()
@@ -21,7 +21,7 @@ defmodule HeroServerTest do
       hero_name: hero_name,
       hero_name_2: hero_name_2,
       enemy_hero_name: enemy_hero_name,
-      seed: {100, 101, 102}
+      seed: seed
     ]
   end
 
