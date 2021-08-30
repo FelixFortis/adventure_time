@@ -3,10 +3,10 @@ defmodule HeroSupervisorTest do
 
   doctest AdventureTime.HeroSupervisor
 
-  alias AdventureTime.{HeroSupervisor, HeroServer, Hero}
+  alias AdventureTime.{HeroSupervisor, HeroServer, Hero, NameGenerator}
 
   setup do
-    hero_name = Hero.random_name()
+    hero_name = NameGenerator.generate()
 
     [
       hero_name: hero_name

@@ -1,15 +1,15 @@
 defmodule AdventureTime.HeroTest do
   use ExUnit.Case, async: true
 
-  alias AdventureTime.{Hero, HeroServer}
+  alias AdventureTime.{Hero, HeroServer, NameGenerator}
 
   doctest Hero
 
   setup do
     [
       hero: Hero.new("test hero", {6, 4}),
-      hero_name: Hero.random_name(),
-      hero_name2: Hero.random_name(),
+      hero_name: NameGenerator.generate(),
+      hero_name2: NameGenerator.generate(),
       seed: {100, 101, 102},
       seed2: {100, 101, 103}
     ]
@@ -65,7 +65,7 @@ defmodule AdventureTime.HeroTest do
   describe "respawn/1" do
     test "the hero respawns on a different random tile", context do
       # for this test we need to ensure the randomness is predictable
-      :rand.seed(:exsplus, {100, 101, 102})
+      :rand.seed(:exsplus, context.seed)
 
       assert Hero.respawn(context.hero) == %Hero{
                name: "test hero",

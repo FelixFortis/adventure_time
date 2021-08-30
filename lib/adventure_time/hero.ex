@@ -4,13 +4,10 @@ defmodule AdventureTime.Hero do
   Module contains functions around hero actions like movement.
   """
 
-  alias AdventureTime.{Hero, GameTile, Arena}
+  alias AdventureTime.{Hero, GameTile, Arena, NameGenerator}
 
   @enforce_keys [:name]
   defstruct [:name, :tile_ref, :alive]
-
-  @adjectives Application.get_env(:adventure_time, :adjectives)
-  @nouns Application.get_env(:adventure_time, :nouns)
 
   def new(name \\ "", tile_ref) do
     hero_name = set_hero_name(name)
@@ -42,16 +39,6 @@ defmodule AdventureTime.Hero do
     |> insert_at(Arena.random_walkable_tile_ref_except(hero.tile_ref))
   end
 
-  def random_name(range \\ 9999, delimiter \\ "_") do
-    :rand.seed(:exsplus)
-    token = if range > 0, do: random(range)
-
-    [@adjectives, @nouns]
-    |> Enum.map(&sample/1)
-    |> Enum.concat(List.wrap(token))
-    |> Enum.join(delimiter)
-  end
-
   defp mark_as_dead(hero) do
     hero
     |> Map.put(:alive, false)
@@ -67,14 +54,10 @@ defmodule AdventureTime.Hero do
     |> Map.put(:tile_ref, new_tile_ref)
   end
 
-  defp random(range) when range > 0, do: :rand.uniform(range)
-
-  defp sample(array), do: Enum.random(array)
-
   defp set_hero_name(name) do
     case name do
       "" ->
-        random_name()
+        NameGenerator.generate()
 
       chosen_name ->
         chosen_name

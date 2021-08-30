@@ -3,7 +3,7 @@ defmodule HeroServerTest do
 
   doctest AdventureTime.HeroServer
 
-  alias AdventureTime.{Hero, HeroServer}
+  alias AdventureTime.{Hero, HeroServer, NameGenerator}
 
   setup do
     Application.stop(:adventure_time)
@@ -13,9 +13,9 @@ defmodule HeroServerTest do
   setup do
     seed = {100, 101, 102}
     :rand.seed(:exsplus, seed)
-    hero_name = Hero.random_name()
-    hero_name_2 = Hero.random_name()
-    enemy_hero_name = Hero.random_name()
+    hero_name = NameGenerator.generate()
+    hero_name_2 = NameGenerator.generate()
+    enemy_hero_name = NameGenerator.generate()
 
     [
       hero_name: hero_name,
