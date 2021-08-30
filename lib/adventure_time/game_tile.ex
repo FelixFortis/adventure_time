@@ -20,24 +20,24 @@ defmodule AdventureTime.GameTile do
     game_tile.walkable == true
   end
 
-  def heroes_on_tile(game_tile_ref) do
+  def heroes_on_tile(tile_ref) do
     heroes = HeroServer.all_heroes()
 
     heroes
     |> Enum.filter(fn hero ->
-      hero.tile_ref == game_tile_ref
+      hero.tile_ref == tile_ref
     end)
   end
 
-  def hero_on_tile?(game_tile_ref, hero_name) do
-    case check_tile_for_hero(game_tile_ref, hero_name) do
+  def hero_on_tile?(tile_ref, hero_name) do
+    case check_tile_for_hero(tile_ref, hero_name) do
       nil -> false
       _ -> true
     end
   end
 
-  def heroes_on_tile?(game_tile_ref) do
-    heroes_on_tile = check_tile_for_heroes(game_tile_ref)
+  def heroes_on_tile?(tile_ref) do
+    heroes_on_tile = heroes_on_tile(tile_ref)
 
     case length(heroes_on_tile) do
       0 -> false
@@ -45,28 +45,45 @@ defmodule AdventureTime.GameTile do
     end
   end
 
-  def hero_count(game_tile_ref) do
-    length(check_tile_for_heroes(game_tile_ref))
+  def hero_count(tile_ref) do
+    length(heroes_on_tile(tile_ref))
   end
 
-  defp check_tile_for_hero(game_tile_ref, hero_name) do
+  def anyone_alive_on_tile?(tile_ref) do
+    length(alive_heroes_on_tile(tile_ref)) > 0
+  end
+
+  def alive_enemies_on_tile?(tile_ref, hero_name) do
+    length(alive_enemies_on_tile(tile_ref, hero_name)) > 0
+  end
+
+  defp alive_enemies_on_tile(tile_ref, hero_name) do
+    heroes = alive_heroes_on_tile(tile_ref)
+
+    heroes
+    |> Enum.filter(fn hero ->
+      hero.name != hero_name
+    end)
+  end
+
+  defp alive_heroes_on_tile(tile_ref) do
+    heroes_on_tile = heroes_on_tile(tile_ref)
+
+    heroes_on_tile
+    |> Enum.filter(fn hero ->
+      hero.alive == true
+    end)
+  end
+
+  defp check_tile_for_hero(tile_ref, hero_name) do
     heroes = HeroServer.all_heroes()
 
     heroes
     |> Enum.filter(fn hero ->
-      hero.tile_ref == game_tile_ref
+      hero.tile_ref == tile_ref
     end)
     |> Enum.find(fn hero ->
       hero.name == hero_name
-    end)
-  end
-
-  defp check_tile_for_heroes(game_tile_ref) do
-    heroes = HeroServer.all_heroes()
-
-    heroes
-    |> Enum.filter(fn hero ->
-      hero.tile_ref == game_tile_ref
     end)
   end
 end
