@@ -7,14 +7,22 @@ defmodule AdventureTime.ArenaTest do
 
   setup do
     [
-      arena: Arena.arena()
+      arena_as_map: Arena.arena_as_map(),
+      arena_as_list: Arena.arena_as_list()
     ]
   end
 
-  describe "arena/0" do
-    test "it creates a new game on a 10x10 arena", context do
-      assert length(Map.keys(context.arena)) == 10
-      assert length(Map.keys(context.arena[0])) == 10
+  describe "arena_as_map/0" do
+    test "it returns a 10x10 arena as a nested map of maps", context do
+      assert length(Map.keys(context.arena_as_map)) == 10
+      assert length(Map.keys(context.arena_as_map[0])) == 10
+    end
+  end
+
+  describe "arena_as_list/0" do
+    test "it returns a 10x10 arena as a nested list of lists", context do
+      assert length(context.arena_as_list) == 10
+      assert length(hd(context.arena_as_list)) == 10
     end
   end
 
