@@ -121,11 +121,17 @@ defmodule AdventureTime.HeroServer do
   end
 
   def handle_call({:move_to, new_tile_ref}, _from, hero) do
-    moved_hero = Hero.move_to(hero, new_tile_ref)
+    case hero.alive do
+      false ->
+        {:reply, hero, hero, @timeout}
 
-    :ets.insert(:heroes_table, {hero.name, moved_hero})
+      true ->
+        moved_hero = Hero.move_to(hero, new_tile_ref)
 
-    {:reply, moved_hero, moved_hero, @timeout}
+        :ets.insert(:heroes_table, {hero.name, moved_hero})
+
+        {:reply, moved_hero, moved_hero, @timeout}
+    end
   end
 
   def handle_call(:die, _from, hero) do
@@ -145,15 +151,21 @@ defmodule AdventureTime.HeroServer do
   end
 
   def handle_call(:attack, _from, hero) do
-    nearby_heroes = Arena.adjacent_heroes(hero.tile_ref)
+    case hero.alive do
+      false ->
+        {:reply, hero, hero, @timeout}
 
-    nearby_heroes
-    |> Enum.filter(fn nearby_hero ->
-      nearby_hero.name != hero.name
-    end)
-    |> kill_nearby_enemy_heroes()
+      true ->
+        nearby_heroes = Arena.adjacent_heroes(hero.tile_ref)
 
-    {:reply, hero, hero, @timeout}
+        nearby_heroes
+        |> Enum.filter(fn nearby_hero ->
+          nearby_hero.name != hero.name
+        end)
+        |> kill_nearby_enemy_heroes()
+
+        {:reply, hero, hero, @timeout}
+    end
   end
 
   def handle_info(:timeout, hero) do
