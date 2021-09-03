@@ -44,6 +44,10 @@ defmodule AdventureTime.HeroServer do
     end)
   end
 
+  def get_hero(hero_name) do
+    GenServer.call(via_hero_registry(hero_name), :get_hero)
+  end
+
   def tile_ref(hero_name) do
     GenServer.call(via_hero_registry(hero_name), :tile_ref)
   end
@@ -110,6 +114,10 @@ defmodule AdventureTime.HeroServer do
     # Logger.info("'#{hero_name}' hero server process spawned.")
 
     {:ok, hero, @timeout}
+  end
+
+  def handle_call(:get_hero, _from, hero) do
+    {:reply, hero, hero, @timeout}
   end
 
   def handle_call(:tile_ref, _from, hero) do
