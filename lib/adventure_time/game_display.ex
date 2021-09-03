@@ -60,7 +60,7 @@ defmodule AdventureTime.GameDisplay do
   end
 
   defp render_hero_info(hero_name) do
-    heroes = HeroServer.all_heroes()
+    heroes = HeroServer.all_heroes_as_list()
 
     heroes
     |> Enum.sort()

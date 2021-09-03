@@ -37,7 +37,7 @@ defmodule AdventureTime.HeroServer do
     )
   end
 
-  def all_heroes do
+  def all_heroes_as_list do
     :ets.tab2list(:heroes_table)
     |> Enum.map(fn {_hero_name, hero} ->
       hero

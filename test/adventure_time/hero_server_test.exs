@@ -80,13 +80,13 @@ defmodule HeroServerTest do
     end
   end
 
-  describe "all_heroes/0" do
+  describe "all_heroes_as_list/0" do
     test "it returns a list of all heroes in play", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       {:ok, _pid} = HeroServer.start_link(context.hero_name_2, context.seed)
 
-      assert length(HeroServer.all_heroes()) >= 2
-      assert hd(HeroServer.all_heroes()).__struct__ == Hero
+      assert length(HeroServer.all_heroes_as_list()) >= 2
+      assert hd(HeroServer.all_heroes_as_list()).__struct__ == Hero
     end
   end
 

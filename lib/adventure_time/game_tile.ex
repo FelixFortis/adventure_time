@@ -21,7 +21,7 @@ defmodule AdventureTime.GameTile do
   end
 
   def heroes_on_tile(tile_ref) do
-    heroes = HeroServer.all_heroes()
+    heroes = HeroServer.all_heroes_as_list()
 
     heroes
     |> Enum.filter(fn hero ->
@@ -76,7 +76,7 @@ defmodule AdventureTime.GameTile do
   end
 
   defp check_tile_for_hero(tile_ref, hero_name) do
-    heroes = HeroServer.all_heroes()
+    heroes = HeroServer.all_heroes_as_list()
 
     heroes
     |> Enum.filter(fn hero ->
