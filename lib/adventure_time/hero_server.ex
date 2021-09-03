@@ -44,6 +44,13 @@ defmodule AdventureTime.HeroServer do
     end)
   end
 
+  def all_heroes_as_map do
+    :ets.tab2list(:heroes_table)
+    |> Map.new(fn
+      {key, value} -> {String.to_atom(key), value}
+    end)
+  end
+
   def get_hero(hero_name) do
     GenServer.call(via_hero_registry(hero_name), :get_hero)
   end
