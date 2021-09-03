@@ -43,7 +43,12 @@ defmodule HeroServerTest do
 
       assert :ets.lookup(:heroes_table, "stored_hero") == [
                {"stored_hero",
-                %AdventureTime.Hero{alive: true, name: "stored_hero", tile_ref: {2, 3}}}
+                %AdventureTime.Hero{
+                  alive: true,
+                  name: "stored_hero",
+                  tag: :stored_hero,
+                  tile_ref: {2, 3}
+                }}
              ]
     end
 
@@ -53,7 +58,12 @@ defmodule HeroServerTest do
 
       assert :ets.lookup(:heroes_table, "stored_hero") == [
                {"stored_hero",
-                %AdventureTime.Hero{alive: true, name: "stored_hero", tile_ref: {2, 4}}}
+                %AdventureTime.Hero{
+                  alive: true,
+                  name: "stored_hero",
+                  tag: :stored_hero,
+                  tile_ref: {2, 4}
+                }}
              ]
     end
 
@@ -63,7 +73,12 @@ defmodule HeroServerTest do
 
       assert :ets.lookup(:heroes_table, "stored_hero") == [
                {"stored_hero",
-                %AdventureTime.Hero{alive: true, name: "stored_hero", tile_ref: {2, 3}}}
+                %AdventureTime.Hero{
+                  alive: true,
+                  name: "stored_hero",
+                  tag: :stored_hero,
+                  tile_ref: {2, 3}
+                }}
              ]
     end
   end
@@ -82,6 +97,16 @@ defmodule HeroServerTest do
 
   describe "all_heroes_as_list/0" do
     test "it returns a list of all heroes in play", context do
+      {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
+      {:ok, _pid} = HeroServer.start_link(context.hero_name_2, context.seed)
+
+      assert length(HeroServer.all_heroes_as_list()) >= 2
+      assert hd(HeroServer.all_heroes_as_list()).__struct__ == Hero
+    end
+  end
+
+  describe "all_heroes_as_map/0" do
+    test "it returns a map of all heroes in play", context do
       {:ok, _pid} = HeroServer.start_link(context.hero_name, context.seed)
       {:ok, _pid} = HeroServer.start_link(context.hero_name_2, context.seed)
 

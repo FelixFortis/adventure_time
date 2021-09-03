@@ -7,13 +7,15 @@ defmodule AdventureTime.Hero do
   alias AdventureTime.{Hero, GameTile, Arena, NameGenerator}
 
   @enforce_keys [:name]
-  defstruct [:name, :tile_ref, :alive]
+  defstruct [:name, :tag, :tile_ref, :alive]
 
   def new(name \\ "", tile_ref) do
     hero_name = set_hero_name(name)
+    tag = parse_player_tag(name)
 
     %Hero{
       name: hero_name,
+      tag: tag,
       tile_ref: tile_ref,
       alive: true
     }
@@ -37,6 +39,13 @@ defmodule AdventureTime.Hero do
     hero
     |> mark_as_alive()
     |> insert_at(Arena.random_walkable_tile_ref_except(hero.tile_ref))
+  end
+
+  def parse_player_tag(player_name) do
+    player_name
+    |> String.downcase()
+    |> String.replace(" ", "_")
+    |> String.to_atom()
   end
 
   defp mark_as_dead(hero) do

@@ -47,7 +47,7 @@ defmodule AdventureTime.HeroServer do
   def all_heroes_as_map do
     :ets.tab2list(:heroes_table)
     |> Map.new(fn
-      {key, value} -> {String.to_atom(key), value}
+      {key, value} -> {Hero.parse_player_tag(key), value}
     end)
   end
 

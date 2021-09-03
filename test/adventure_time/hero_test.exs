@@ -19,6 +19,7 @@ defmodule AdventureTime.HeroTest do
     test "it creates a new hero at the given location", context do
       assert context.hero == %Hero{
                name: "test hero",
+               tag: :test_hero,
                tile_ref: {6, 4},
                alive: true
              }
@@ -29,6 +30,7 @@ defmodule AdventureTime.HeroTest do
     test "it updates the hero's location when moving to an adjacent walkable tile", context do
       assert Hero.move_to(context.hero, {6, 5}) == %Hero{
                name: "test hero",
+               tag: :test_hero,
                tile_ref: {6, 5},
                alive: true
              }
@@ -37,6 +39,7 @@ defmodule AdventureTime.HeroTest do
     test "it doesn't update the hero's location when moving to a non-adjacent tile", context do
       assert Hero.move_to(context.hero, {6, 6}) == %Hero{
                name: "test hero",
+               tag: :test_hero,
                tile_ref: {6, 4},
                alive: true
              }
@@ -46,6 +49,7 @@ defmodule AdventureTime.HeroTest do
          context do
       assert Hero.move_to(context.hero, {6, 3}) == %Hero{
                name: "test hero",
+               tag: :test_hero,
                tile_ref: {6, 4},
                alive: true
              }
@@ -56,6 +60,7 @@ defmodule AdventureTime.HeroTest do
     test "the hero's alive status is set to false", context do
       assert Hero.die(context.hero) == %Hero{
                name: "test hero",
+               tag: :test_hero,
                tile_ref: {6, 4},
                alive: false
              }
@@ -69,6 +74,7 @@ defmodule AdventureTime.HeroTest do
 
       assert Hero.respawn(context.hero) == %Hero{
                name: "test hero",
+               tag: :test_hero,
                tile_ref: {2, 3},
                alive: true
              }
